@@ -25,8 +25,6 @@ Copy the following files into your project:
 - PFMoveApplication.h
 - PFMoveApplication.m
 
-If your project has ARC enabled, you'll want to disable ARC on the above files. You can do so by adding -fno-objc-arc compiler flag to your PFMoveApplication.m source file. See http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project/6658549#6658549
-
 If your application is localized, also copy the 'MoveApplication.string' files into your project.
 
 Link your application against Security.framework.

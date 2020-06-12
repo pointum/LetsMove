@@ -6,7 +6,7 @@
 //  Copyright 2009 Potion Factory LLC. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 int main(int argc, const char *argv[]) {
     return NSApplicationMain(argc,  argv);

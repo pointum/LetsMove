@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 	
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 /**
  Moves the running application to ~/Applications or /Applications if the former does not exist.
