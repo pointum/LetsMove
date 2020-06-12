@@ -34,11 +34,6 @@
 #define kStrMoveApplicationQuestionInfoWillRequirePasswd _I10NS(@"Note that this will require an administrator password.")
 #define kStrMoveApplicationQuestionInfoInDownloadsFolder _I10NS(@"This will keep your Downloads folder uncluttered.")
 
-// Needs to be defined for compiling under 10.5 SDK
-#ifndef NSAppKitVersionNumber10_5
-	#define NSAppKitVersionNumber10_5 949
-#endif
-
 // By default, we use a small control/font for the suppression button.
 // If you prefer to use the system default (to match your other alerts),
 // set this to 0.
@@ -141,7 +136,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 		if (PFUseSmallAlertSuppressCheckbox) {
 			NSCell *cell = [[alert suppressionButton] cell];
-			[cell setControlSize:NSSmallControlSize];
+            [cell setControlSize:NSControlSizeSmall];
 			[cell setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
 		}
 	}
@@ -297,26 +292,13 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 static BOOL IsApplicationAtPathRunning(NSString *bundlePath) {
 	bundlePath = [bundlePath stringByStandardizingPath];
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
-	// Use the new API on 10.6 or higher to determine if the app is already running
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-		for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
-			NSString *runningAppBundlePath = [[[runningApplication bundleURL] path] stringByStandardizingPath];
-			if ([runningAppBundlePath isEqualToString:bundlePath]) {
-				return YES;
-			}
-		}
-		return NO;
-	}
-#endif
-	// Use the shell to determine if the app is already running on systems 10.5 or lower
-	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(bundlePath)];
-	NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-	[task waitUntilExit];
-
-	// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
-	// Which means that the app is already running
-	return [task terminationStatus] == 0;
+    for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
+        NSString *runningAppBundlePath = [[[runningApplication bundleURL] path] stringByStandardizingPath];
+        if ([runningAppBundlePath isEqualToString:bundlePath]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 static BOOL IsApplicationAtPathNested(NSString *path) {
@@ -349,19 +331,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 	[hdiutil waitUntilExit];
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
-	NSDictionary *info = nil;
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
-	}
-	else {
-#endif
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
-		info = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:NULL errorDescription:NULL];
-#endif
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
-	}
-#endif
+	NSDictionary *info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
 
 	if (![info isKindOfClass:[NSDictionary class]]) return nil;
 
@@ -389,21 +359,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 }
 
 static BOOL Trash(NSString *path) {
-	BOOL result = NO;
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8
-	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_8) {
-		result = [[NSFileManager defaultManager] trashItemAtURL:[NSURL fileURLWithPath:path] resultingItemURL:NULL error:NULL];
-	}
-#endif
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_11
-	if (!result) {
-		result = [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation
-															  source:[path stringByDeletingLastPathComponent]
-														 destination:@""
-															   files:[NSArray arrayWithObject:[path lastPathComponent]]
-																 tag:NULL];
-	}
-#endif
+	BOOL result = [[NSFileManager defaultManager] trashItemAtURL:[NSURL fileURLWithPath:path] resultingItemURL:NULL error:NULL];
 	
 	// As a last resort try trashing with AppleScript.
 	// This allows us to trash the app in macOS Sierra even when the app is running inside
@@ -541,21 +497,13 @@ static void Relaunch(NSString *destinationPath) {
 	// This is done so that the relaunched app opens as the front-most app.
 	int pid = [[NSProcessInfo processInfo] processIdentifier];
 
-	// Command run just before running open /final/path
-	NSString *preOpenCmd = @"";
-
 	NSString *quotedDestinationPath = ShellQuotedString(destinationPath);
 
-	// OS X >=10.5:
+	// Command run just before running open /final/path
 	// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
 	// duplicate "scary file from the internet" dialog.
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-		// Add the -r flag on 10.6
-		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine %@", quotedDestinationPath];
-	}
-	else {
-		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine %@", quotedDestinationPath];
-	}
+
+    NSString *preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine %@", quotedDestinationPath];
 
 	NSString *script = [NSString stringWithFormat:@"(while /bin/kill -0 %d >&/dev/null; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
