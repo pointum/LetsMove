@@ -37,6 +37,8 @@ Public domain
 Version History
 ---------------
 
+* Unreleased
+	- Fix privileged installer ignoring EINTR (originally reported in [issue #73](https://github.com/potionfactory/LetsMove/issues/73))
 * 2.0.0
 	- Migrate project to Swift Package Manager
 	- Remove legacy Xcode project, CocoaPods, and Carthage support

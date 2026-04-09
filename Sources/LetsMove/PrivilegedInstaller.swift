@@ -16,6 +16,27 @@ final class PrivilegedInstaller {
 
     private var authorizationExecuteWithPrivileges: AuthorizationExecuteWithPrivilegesType? = nil
 
+    private struct WaitResult {
+        fileprivate let pid: pid_t
+        fileprivate let status: Int32
+
+        // WIFEXITED: process called exit() rather than being killed by a signal
+        private var didExit: Bool { pid != -1 && (status & 0x7F) == 0 }
+
+        // WEXITSTATUS: the exit code passed to exit() or returned from main()
+        private var exitCode: Int32 { (status >> 8) & 0xFF }
+
+        var succeeded: Bool { didExit && exitCode == 0 }
+    }
+
+    @discardableResult
+    private func waitForChild() -> WaitResult {
+        var pid: pid_t
+        var status: Int32 = 0
+        repeat { pid = wait(&status) } while pid == -1 && errno == EINTR
+        return WaitResult(pid: pid, status: status)
+    }
+
     func install(from srcURL: URL, to dstURL: URL) -> Result {
         // Make sure that the destination path is an app bundle. We're essentially running 'sudo rm -rf'
         // so we really don't want to fuck this up.
@@ -48,46 +69,28 @@ final class PrivilegedInstaller {
             // if it is no longer accessible. If Apple removes the function entirely this will fail gracefully. If
             // they keep the function and throw some sort of exception, this won't fail gracefully, but that's a
             // risk we'll have to take for now.
-            // RTLD_DEFAULT is ((void *) -2) in C — not exposed as a Swift constant
-            let rtldDefault = UnsafeMutableRawPointer(bitPattern: -2)
-            if let sym = dlsym(rtldDefault, "AuthorizationExecuteWithPrivileges") {
+            let RTLD_DEFAULT = UnsafeMutableRawPointer(bitPattern: -2)
+            if let sym = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges") {
                 authorizationExecuteWithPrivileges = unsafeBitCast(sym, to: AuthorizationExecuteWithPrivilegesType.self)
             }
         }
-        guard let executeWithPrivileges = authorizationExecuteWithPrivileges else { return .failed }
+        guard let authorizationExecuteWithPrivileges else { return .failed }
 
-        // Delete the destination
-        let deleteOK: Bool = dstURL.path.withCString { dstCStr in
-            var args: [UnsafeMutablePointer<CChar>?] = [strdup("-rf"), strdup(dstCStr), nil]
+        func run(_ executable: String, _ stringArgs: [String]) -> Bool {
+            var args: [UnsafeMutablePointer<CChar>?] = stringArgs.map { strdup($0) } + [nil]
             defer { args.forEach { free($0) } }
             let err = args.withUnsafeMutableBufferPointer {
-                executeWithPrivileges(authRef, "/bin/rm", [], $0.baseAddress, nil)
+                authorizationExecuteWithPrivileges(authRef, executable, [], $0.baseAddress, nil)
             }
-            guard err == errAuthorizationSuccess else { return false }
-
-            // Wait until it's done
-            var status: Int32 = 0
-            let pid = wait(&status)
-            return pid != -1 && (status & 0x7F) == 0 // We don't care about exit status as the destination most likely does not exist
+            return err == errAuthorizationSuccess
         }
-        guard deleteOK else { return .failed }
+
+        // Delete the destination
+        guard run("/bin/rm", ["-rf", dstURL.path]) else { return .failed }
+        waitForChild()
 
         // Copy
-        let copyOK: Bool = srcURL.path.withCString { srcCStr in
-            dstURL.path.withCString { dstCStr in
-                var args: [UnsafeMutablePointer<CChar>?] = [strdup("-pR"), strdup(srcCStr), strdup(dstCStr), nil]
-                defer { args.forEach { free($0) } }
-                let err = args.withUnsafeMutableBufferPointer {
-                    executeWithPrivileges(authRef, "/bin/cp", [], $0.baseAddress, nil)
-                }
-                guard err == errAuthorizationSuccess else { return false }
-
-                // Wait until it's done
-                var status: Int32 = 0
-                let pid = wait(&status)
-                return pid != -1 && (status & 0x7F) == 0 && (status >> 8) & 0xFF == 0
-            }
-        }
-        return copyOK ? .success : .failed
+        guard run("/bin/cp", ["-pR", srcURL.path, dstURL.path]) else { return .failed }
+        return waitForChild().succeeded ? .success : .failed
     }
 }
