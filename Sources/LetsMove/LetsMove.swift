@@ -49,60 +49,48 @@ public enum LetsMove {
         let bundleURL = Bundle.main.bundleURL
 
         // Check if the bundle is embedded in another application
-        let isNested = isApplicationNested(at: bundleURL)
+        let hasParentApp = bundleURL.hasParentApp
 
         // Skip if the application is already in some Applications folder,
         // unless it's inside another app's bundle.
-        guard !isInApplicationsFolder(bundleURL) || isNested else { return }
+        guard !bundleURL.isInApplicationsFolder || hasParentApp else { return }
 
         // OK, looks like we'll need to do a move - set the status variable appropriately
         isInProgress = true
 
         // Are we on a disk image?
-        let diskImageDevice = diskImageDevice(containing: bundleURL)
+        let removableDevicePath = bundleURL.removableDevicePath
 
         // Since we are good to go, get the preferred installation directory.
         let (applicationsDirectory, installToUserApplications) = preferredInstallLocation()
         let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
         // Check if we need admin password to write to the Applications directory
-        var needAuthorization = !applicationsDirectory.isWritable
-
-        // Check if the destination bundle is already there but not writable
-        if destinationURL.resourceExists {
-            needAuthorization = needAuthorization || !destinationURL.isWritable
-        }
+        let needAuthorization = !applicationsDirectory.isWritable
+            || (destinationURL.resourceExists && !destinationURL.isWritable)
 
         // Setup the alert
         let alert = NSAlert()
-        do {
-            alert.messageText = installToUserApplications ? moveAlertTitleHome : moveAlertTitle
+        alert.messageText = installToUserApplications ? moveAlertTitleHome : moveAlertTitle
 
-            var informativeText = moveAlertMessage
+        var informativeText = moveAlertMessage
+        if needAuthorization {
+            informativeText += " " + requiresPasswordNote
+        } else if bundleURL.isContained(in: .downloadsDirectory) {
+            // Don't mention this stuff if we need authentication. The informative text is long enough as it is in that case.
+            informativeText += " " + downloadsNote
+        }
+        alert.informativeText = informativeText
 
-            if needAuthorization {
-                informativeText += " " + requiresPasswordNote
-            } else if isURL(bundleURL, in: .downloadsDirectory) {
-                // Don't mention this stuff if we need authentication. The informative text is long enough as it is in that case.
-                informativeText += " " + downloadsNote
-            }
+        alert.addButton(withTitle: moveButtonTitle)
 
-            alert.informativeText = informativeText
+        let cancelButton = alert.addButton(withTitle: doNotMoveButtonTitle)
+        cancelButton.keyEquivalent = "\u{1b}" // Escape key
 
-            // Add accept button
-            alert.addButton(withTitle: moveButtonTitle)
-
-            // Add deny button
-            let cancelButton = alert.addButton(withTitle: doNotMoveButtonTitle)
-            cancelButton.keyEquivalent = "\u{1b}" // Escape key
-
-            // Setup suppression button
-            alert.showsSuppressionButton = true
-
-            if usesSmallSuppressionCheckbox {
-                alert.suppressionButton?.controlSize = .small
-                alert.suppressionButton?.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-            }
+        alert.showsSuppressionButton = true
+        if usesSmallSuppressionCheckbox {
+            alert.suppressionButton?.controlSize = .small
+            alert.suppressionButton?.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         }
 
         // Activate app -- work-around for focus issues related to "scary file from internet" OS dialog.
@@ -138,7 +126,7 @@ public enum LetsMove {
                 // If a copy already exists in the Applications folder, put it in the Trash
                 if destinationURL.resourceExists {
                     // But first, make sure that it's not running
-                    if isApplicationRunning(at: destinationURL) {
+                    if destinationURL.isApplicationRunning {
                         // Give the running app focus and terminate myself
                         NSLog("INFO -- Switching to an already running version")
                         let task = Process()
@@ -149,7 +137,7 @@ public enum LetsMove {
                         isInProgress = false
                         exit(0)
                     } else {
-                        if !trash(destinationURL) {
+                        if !destinationURL.moveToTrash() {
                             showFailureAlert()
                             return
                         }
@@ -167,7 +155,7 @@ public enum LetsMove {
             // NOTE: This final delete does not work if the source bundle is in a network mounted volume.
             //       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
             //       but it'd be great if someone could fix this.
-            if !isNested && diskImageDevice == nil && !deleteOrTrash(bundleURL) {
+            if !hasParentApp && removableDevicePath == nil && !bundleURL.deleteOrMoveToTrash() {
                 NSLog("WARNING -- Could not delete application after moving it to Applications folder")
             }
 
@@ -176,7 +164,7 @@ public enum LetsMove {
 
             // Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
             // otherwise leave it mounted).
-            if let device = diskImageDevice, !isNested {
+            if let device = removableDevicePath, !hasParentApp {
                 let script = "(/bin/sleep 5 && /usr/bin/hdiutil detach \(shellQuoted(device))) &"
                 let task = Process()
                 task.executableURL = URL(fileURLWithPath: "/bin/sh")
@@ -205,12 +193,11 @@ public enum LetsMove {
         let fm = FileManager.default
 
         if let userAppURL = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
-           userAppURL.isDirectory {
-            // User Applications directory exists. Get the directory contents.
-            let contents = (try? fm.contentsOfDirectory(at: userAppURL, includingPropertiesForKeys: nil)) ?? []
-
-            // Check if there is at least one ".app" inside the directory.
-            for item in contents where item.pathExtension == "app" {
+           userAppURL.isDirectory,
+           let enumerator = fm.enumerator(at: userAppURL, includingPropertiesForKeys: nil,
+                                          options: .skipsSubdirectoryDescendants) {
+            let hasAnApp = enumerator.contains { ($0 as? URL)?.pathExtension == "app" }
+            if hasAnApp {
                 return (userAppURL.resolvingSymlinksInPath(), true)
             }
         }
@@ -221,126 +208,6 @@ public enum LetsMove {
         return (localAppURL.resolvingSymlinksInPath(), false)
     }
 
-    private static func isURL(_ url: URL, in directory: FileManager.SearchPathDirectory) -> Bool {
-        let fm = FileManager.default
-        for directoryURL in fm.urls(for: directory, in: .allDomainsMask) {
-            var relationship: FileManager.URLRelationship = .other
-            try? fm.getRelationship(&relationship, ofDirectoryAt: directoryURL, toItemAt: url)
-            if relationship == .contains { return true }
-        }
-        return false
-    }
-
-    private static func isInApplicationsFolder(_ url: URL) -> Bool {
-        // Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
-        isURL(url, in: .applicationDirectory) || url.pathComponents.contains("Applications")
-    }
-
-    private static func isApplicationRunning(at bundleURL: URL) -> Bool {
-        guard let id = bundleURL.fileResourceIdentifier else { return false }
-        return NSWorkspace.shared.runningApplications.contains {
-            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } ?? false
-        }
-    }
-
-    private static func isApplicationNested(at url: URL) -> Bool {
-        for component in url.deletingLastPathComponent().pathComponents {
-            if component.hasSuffix(".app") {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    private static func diskImageDevice(containing url: URL) -> String? {
-        let containingPath = url.deletingLastPathComponent().path
-
-        var fs = statfs()
-        if statfs((containingPath as NSString).fileSystemRepresentation, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
-            return nil
-        }
-
-        let device = withUnsafeBytes(of: fs.f_mntfromname) { bytes -> String in
-            let ptr = bytes.baseAddress!.assumingMemoryBound(to: CChar.self)
-            return FileManager.default.string(withFileSystemRepresentation: ptr, length: strlen(ptr))
-        }
-
-        let hdiutil = Process()
-        hdiutil.executableURL = URL(fileURLWithPath: "/usr/bin/hdiutil")
-        hdiutil.arguments = ["info", "-plist"]
-        let pipe = Pipe()
-        hdiutil.standardOutput = pipe
-        guard (try? hdiutil.run()) != nil else { return nil }
-        hdiutil.waitUntilExit()
-
-        struct HdiutilInfo: Decodable {
-            let images: [Image]
-
-            struct Image: Decodable {
-                let systemEntities: [SystemEntity]?
-                enum CodingKeys: String, CodingKey { case systemEntities = "system-entities" }
-
-                struct SystemEntity: Decodable {
-                    let devEntry: String?
-                    enum CodingKeys: String, CodingKey { case devEntry = "dev-entry" }
-                }
-            }
-        }
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        guard let info = try? PropertyListDecoder().decode(HdiutilInfo.self, from: data) else { return nil }
-
-        let isDiskImage = info.images.contains {
-            $0.systemEntities?.contains {
-                $0.devEntry == device
-            } ?? false
-        }
-        return isDiskImage ? device : nil
-    }
-
-    private static func trash(_ url: URL) -> Bool {
-        var result = (try? FileManager.default.trashItem(at: url, resultingItemURL: nil)) != nil
-
-        // As a last resort try trashing with AppleScript.
-        // This allows us to trash the app in macOS Sierra even when the app is running inside
-        // an app translocation image.
-        if !result {
-            let source = """
-                set theFile to POSIX file "\(url.path)"
-                tell application "Finder"
-                    move theFile to trash
-                end tell
-                """
-            var errorDict: NSDictionary?
-            let appleScript = NSAppleScript(source: source)
-            let scriptResult = appleScript?.executeAndReturnError(&errorDict)
-            if scriptResult == nil {
-                NSLog("Trash AppleScript error: %@", errorDict ?? [:])
-            }
-            result = scriptResult != nil
-        }
-
-        if !result {
-            NSLog("ERROR -- Could not trash '\(url.path)'")
-        }
-
-        return result
-    }
-
-    private static func deleteOrTrash(_ url: URL) -> Bool {
-        do {
-            try FileManager.default.removeItem(at: url)
-            return true
-        } catch {
-            // Don't log warning if on Sierra and running inside App Translocation path
-            if !url.path.contains("/AppTranslocation/") {
-                NSLog("WARNING -- Could not delete '\(url.path)': \(error.localizedDescription)")
-            }
-
-            return trash(url)
-        }
-    }
 
     private static let privilegedInstaller = PrivilegedInstaller()
 
@@ -395,5 +262,112 @@ private extension URL {
 
     var fileResourceIdentifier: (any NSCopying & NSSecureCoding & NSObjectProtocol)? {
         try? resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier
+    }
+
+    func contains(_ other: URL) -> Bool {
+        var relationship: FileManager.URLRelationship = .other
+        try? FileManager.default.getRelationship(&relationship, ofDirectoryAt: self, toItemAt: other)
+        return relationship == .contains
+    }
+
+    func isContained(in directory: FileManager.SearchPathDirectory) -> Bool {
+        FileManager.default.urls(for: directory, in: .allDomainsMask).contains { $0.contains(self) }
+    }
+
+    var isInApplicationsFolder: Bool {
+        // Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
+        isContained(in: .applicationDirectory) || pathComponents.contains("Applications")
+    }
+
+    var isApplicationRunning: Bool {
+        guard let id = fileResourceIdentifier else { return false }
+        return NSWorkspace.shared.runningApplications.contains {
+            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } ?? false
+        }
+    }
+
+    var hasParentApp: Bool {
+        deletingLastPathComponent().pathComponents.contains { $0.hasSuffix(".app") }
+    }
+
+    func moveToTrash() -> Bool {
+        do {
+            try FileManager.default.trashItem(at: self, resultingItemURL: nil)
+            return true
+        } catch {}
+
+        // As a last resort try trashing with AppleScript.
+        // This allows us to trash the app in macOS Sierra even when the app is running inside
+        // an app translocation image.
+        let source = """
+            set theFile to POSIX file "\(path)"
+            tell application "Finder"
+                move theFile to trash
+            end tell
+            """
+        var errorDict: NSDictionary?
+        let result = NSAppleScript(source: source)?.executeAndReturnError(&errorDict)
+        if result == nil {
+            NSLog("Trash AppleScript error: %@", errorDict ?? [:])
+            NSLog("ERROR -- Could not trash '\(path)'")
+        }
+        return result != nil
+    }
+
+    func deleteOrMoveToTrash() -> Bool {
+        do {
+            try FileManager.default.removeItem(at: self)
+            return true
+        } catch {
+            // Don't log warning if on Sierra and running inside App Translocation path
+            if !path.contains("/AppTranslocation/") {
+                NSLog("WARNING -- Could not delete '\(path)': \(error.localizedDescription)")
+            }
+            return moveToTrash()
+        }
+    }
+
+    var removableDevicePath: String? {
+        let containingPath = deletingLastPathComponent().path
+
+        var fs = statfs()
+        if statfs((containingPath as NSString).fileSystemRepresentation, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
+            return nil
+        }
+
+        let device = withUnsafeBytes(of: fs.f_mntfromname) { bytes -> String in
+            let ptr = bytes.baseAddress!.assumingMemoryBound(to: CChar.self)
+            return FileManager.default.string(withFileSystemRepresentation: ptr, length: strlen(ptr))
+        }
+
+        let hdiutil = Process()
+        hdiutil.executableURL = URL(fileURLWithPath: "/usr/bin/hdiutil")
+        hdiutil.arguments = ["info", "-plist"]
+        let pipe = Pipe()
+        hdiutil.standardOutput = pipe
+        do { try hdiutil.run() } catch { return nil }
+        hdiutil.waitUntilExit()
+
+        struct HdiutilInfo: Decodable {
+            let images: [Image]
+
+            struct Image: Decodable {
+                let systemEntities: [SystemEntity]?
+                enum CodingKeys: String, CodingKey { case systemEntities = "system-entities" }
+
+                struct SystemEntity: Decodable {
+                    let devEntry: String?
+                    enum CodingKeys: String, CodingKey { case devEntry = "dev-entry" }
+                }
+            }
+        }
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        guard let info = try? PropertyListDecoder().decode(HdiutilInfo.self, from: data) else { return nil }
+
+        let isDiskImage = info.images.contains {
+            $0.systemEntities?.contains { $0.devEntry == device } ?? false
+        }
+        return isDiskImage ? device : nil
     }
 }
