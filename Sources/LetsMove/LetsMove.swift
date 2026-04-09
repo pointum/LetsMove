@@ -63,8 +63,7 @@ public enum LetsMove {
         let diskImageDevice = diskImageDevice(containing: bundleURL)
 
         // Since we are good to go, get the preferred installation directory.
-        var installToUserApplications = false
-        let applicationsDirectory = preferredInstallLocation(isUserDirectory: &installToUserApplications)
+        let (applicationsDirectory, installToUserApplications) = preferredInstallLocation()
         let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
         // Check if we need admin password to write to the Applications directory
@@ -126,17 +125,17 @@ public enum LetsMove {
 
             // Move
             if needAuthorization {
-                var authorizationCanceled = false
-                if !authorizedInstall(srcURL: bundleURL, dstURL: destinationURL, canceled: &authorizationCanceled) {
-                    if authorizationCanceled {
-                        NSLog("INFO -- Not moving because user canceled authorization")
-                        isInProgress = false
-                        return
-                    } else {
-                        NSLog("ERROR -- Could not copy myself to /Applications with authorization")
-                        showFailureAlert()
-                        return
-                    }
+                switch authorizedInstall(srcURL: bundleURL, dstURL: destinationURL) {
+                case true:
+                    break
+                case false:
+                    NSLog("ERROR -- Could not copy myself to /Applications with authorization")
+                    showFailureAlert()
+                    return
+                case nil:
+                    NSLog("INFO -- Not moving because user canceled authorization")
+                    isInProgress = false
+                    return
                 }
             } else {
                 // If a copy already exists in the Applications folder, put it in the Trash
@@ -201,7 +200,7 @@ public enum LetsMove {
 
     // MARK: - Helper Functions
 
-    private static func preferredInstallLocation(isUserDirectory: inout Bool) -> URL {
+    private static func preferredInstallLocation() -> (url: URL, isUserDirectory: Bool) {
         // Return the preferred install location.
         // Assume that if the user has a ~/Applications folder, they'd prefer their
         // applications to go there.
@@ -215,17 +214,14 @@ public enum LetsMove {
 
             // Check if there is at least one ".app" inside the directory.
             for item in contents where item.pathExtension == "app" {
-                isUserDirectory = true
-                return userAppURL.resolvingSymlinksInPath()
+                return (userAppURL.resolvingSymlinksInPath(), true)
             }
         }
 
         // No user Applications directory in use. Return the machine local Applications directory
-        isUserDirectory = false
-
         let localAppURL = fm.urls(for: .applicationDirectory, in: .localDomainMask).last
             ?? URL(fileURLWithPath: "/Applications")
-        return localAppURL.resolvingSymlinksInPath()
+        return (localAppURL.resolvingSymlinksInPath(), false)
     }
 
     private static func isInApplicationsFolder(_ url: URL) -> Bool {
@@ -361,9 +357,8 @@ public enum LetsMove {
 
     private static var authorizationExecuteWithPrivileges: AuthorizationExecuteWithPrivilegesType? = nil
 
-    private static func authorizedInstall(srcURL: URL, dstURL: URL, canceled: inout Bool) -> Bool {
-        canceled = false
-
+    // Returns true on success, false on failure, nil if the user canceled authorization.
+    private static func authorizedInstall(srcURL: URL, dstURL: URL) -> Bool? {
         // Make sure that the destination path is an app bundle. We're essentially running 'sudo rm -rf'
         // so we really don't want to fuck this up.
         guard dstURL.pathExtension == "app" else { return false }
@@ -386,8 +381,7 @@ public enum LetsMove {
             }
         }
         guard rightsErr == errAuthorizationSuccess else {
-            if rightsErr == errAuthorizationCanceled { canceled = true }
-            return false
+            return rightsErr == errAuthorizationCanceled ? nil : false
         }
 
         if authorizationExecuteWithPrivileges == nil {
