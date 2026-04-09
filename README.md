@@ -35,10 +35,8 @@ func applicationWillFinishLaunching(_ notification: Notification) {
 Copy the following files from `Sources/LetsMove` into your project:
 
 - `include/PFMoveApplication.h`
-- `PFMoveApplication.m`
+- `PFMoveApplication.swift`
 - `MoveApplication.xcstrings` (if your application is localized)
-- Link your application against `Security.framework`
-
 
 License
 -------
