@@ -101,7 +101,7 @@
             "value" : "Nie mogę przenieść do folderu Programy"
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não foi possível mover para a pasta Aplicações"
@@ -143,19 +143,19 @@
             "value" : "Applications klasörüne taşınamadı"
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không thể chuyển ứng dụng đến thư mục Ứng dụng"
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "无法移动到“应用程序”文件夹中"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法移動到“應用程式”檔案夾中"
@@ -263,7 +263,7 @@
             "value" : "Nie przenoś"
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não mover"
@@ -305,19 +305,19 @@
             "value" : "Taşınmasın"
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không chuyển ứng dụng"
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "不移动"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "不要移動"
@@ -425,7 +425,7 @@
             "value" : "Jeśli chcesz, rzecz zostanie automatycznie przeniesiona do folderu Programy."
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Posso mover-me para a pasta Aplicações se desejar."
@@ -467,19 +467,19 @@
             "value" : "İsterseniz uygulama Applications klasörüne taşınabilir."
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ứng dụng này có thể tự chuyển đến thư mục Ứng Dụng nếu bạn muốn."
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "我要自己把程序移动到“应用程序”文件夹中。"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "我要自己把應用程式移動到“應用程式”檔案夾中。"
@@ -587,7 +587,7 @@
             "value" : "Przenieś do folderu Programy"
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para a pasta Aplicações"
@@ -629,19 +629,19 @@
             "value" : "Applications Klasörüne Taşınsın"
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chuyển đến thư mục Ứng dụng"
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "移动到“应用程序”文件夹中"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "移動到“應用程式”檔案夾中"
@@ -749,7 +749,7 @@
             "value" : "Przenieść do folderu Programy w twoim katalogu domowym?"
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para a pasta Aplicações na sua pasta Pessoal?"
@@ -791,19 +791,19 @@
             "value" : "Applications klasörü Kullanıcı klasörünüze taşınsın mı?"
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chuyển đến thư mục Ứng dụng trong thư mục Home của bạn?"
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "是否要把程序移动到你的个人文件夹里的“应用程序”文件夹中？"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "是否要把程式移動到你的個人檔案夾裡的“應用程式”檔案夾中？"
@@ -911,7 +911,7 @@
             "value" : "Przenieść do folderu Programy?"
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para a pasta Aplicações?"
@@ -953,19 +953,19 @@
             "value" : "Application Klasörüne Taşınma"
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chuyển đến thư mục Ứng dụng?"
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "是否要把程序移动到“应用程序”文件夹中？"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "是否要把程式移動到“應用程式”檔案夾中？"
@@ -1073,7 +1073,7 @@
             "value" : "Ta operacja będzie wymagała podania hasła administratora."
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atenção que isto irá necessitar da palavra-passe de administrador."
@@ -1115,19 +1115,19 @@
             "value" : "Bu işlem için yönetici parolasının isteneceğeni unutmayın."
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Để chuyển ứng dụng này, bạn cần nhập mật khẩu của quản trị viên."
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "注意，本操作需要你输入管理员密码。"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "注意，這將會需要輸入管理者密碼。"
@@ -1235,7 +1235,7 @@
             "value" : "Dzięki temu unikniesz bałaganu w folderze Pobrane rzeczy."
           }
         },
-        "pt" : {
+        "pt_PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Isto irá manter a sua pasta Descargas organizada."
@@ -1277,19 +1277,19 @@
             "value" : "Bu işlem İndirmeler klasörünün dağılmasını engeller."
           }
         },
-        "vi-VN" : {
+        "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Việc này sẽ giúp thư mục Tải xuống của bạn trở nên sạch sẽ hơn."
           }
         },
-        "zh_CN" : {
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "这样做能让你的“下载”文件夹保持整洁。"
           }
         },
-        "zh_TW" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "這樣做能讓你的“下載項目”檔案夾保持乾淨。"
