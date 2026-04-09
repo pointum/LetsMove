@@ -1,14 +1,15 @@
 LetsMove
 ========
 
-A sample project that demonstrates how to move a running Mac OS X application to the Applications folder.
+A sample project that demonstrates how to move a running macOS application to the Applications folder.
 
 ![Screenshot](http://i.imgur.com/euTRZiI.png)
 
 
 Requirements
 ------------
-Builds and runs on Mac OS X 10.11 or higher. Does NOT support sandboxed applications.
+Builds and runs on macOS 10.11 or higher. Requires Xcode 15 or later to build. 
+Does NOT support sandboxed applications.
 
 
 Usage
@@ -25,7 +26,7 @@ Copy the following files into your project:
 - PFMoveApplication.h
 - PFMoveApplication.m
 
-If your application is localized, also copy the 'MoveApplication.string' files into your project.
+If your application is localized, also copy MoveApplication.xcstrings into your project.
 
 Link your application against Security.framework.
 
@@ -40,6 +41,12 @@ Public domain
 
 Version History
 ---------------
+
+* 1.25
+	- Migrate localization strings to a string catalog (requires Xcode 15)
+	- Add Greek and Vietnamese localizations
+	- Raise minimum deployment target to macOS 10.11
+	- Use ARC and modern Objective-C syntax
 
 * 1.24
 	- Add PFMoveIsInProgress function
