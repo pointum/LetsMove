@@ -46,37 +46,34 @@ public enum LetsMove {
         // Skip if user suppressed the alert before
         guard !UserDefaults.standard.bool(forKey: alertSuppressKey) else { return }
 
-        // Path of the bundle
-        let bundlePath = Bundle.main.bundlePath
+        // URL of the bundle
+        let bundleURL = Bundle.main.bundleURL
 
         // Check if the bundle is embedded in another application
-        let isNested = isApplicationNested(at: bundlePath)
+        let isNested = isApplicationNested(at: bundleURL)
 
         // Skip if the application is already in some Applications folder,
         // unless it's inside another app's bundle.
-        guard !isInApplicationsFolder(bundlePath) || isNested else { return }
+        guard !isInApplicationsFolder(bundleURL) || isNested else { return }
 
         // OK, looks like we'll need to do a move - set the status variable appropriately
         isInProgress = true
 
-        // File Manager
-        let fm = FileManager.default
-
         // Are we on a disk image?
-        let diskImageDevice = diskImageDevice(containing: bundlePath)
+        let diskImageDevice = diskImageDevice(containing: bundleURL)
 
         // Since we are good to go, get the preferred installation directory.
         var installToUserApplications = false
         let applicationsDirectory = preferredInstallLocation(isUserDirectory: &installToUserApplications)
-        let bundleName = (bundlePath as NSString).lastPathComponent
-        let destinationPath = (applicationsDirectory as NSString).appendingPathComponent(bundleName)
+        let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
         // Check if we need admin password to write to the Applications directory
-        var needAuthorization = !fm.isWritableFile(atPath: applicationsDirectory)
+        var needAuthorization = (try? applicationsDirectory.resourceValues(forKeys: [.isWritableKey]))?.isWritable != true
 
         // Check if the destination bundle is already there but not writable
-        needAuthorization = needAuthorization
-            || (fm.fileExists(atPath: destinationPath) && !fm.isWritableFile(atPath: destinationPath))
+        if let destValues = try? destinationURL.resourceValues(forKeys: [.isWritableKey]) {
+            needAuthorization = needAuthorization || destValues.isWritable != true
+        }
 
         // Setup the alert
         let alert = NSAlert()
@@ -87,7 +84,7 @@ public enum LetsMove {
 
             if needAuthorization {
                 informativeText += " " + requiresPasswordNote
-            } else if isInDownloadsFolder(bundlePath) {
+            } else if isInDownloadsFolder(bundleURL) {
                 // Don't mention this stuff if we need authentication. The informative text is long enough as it is in that case.
                 informativeText += " " + downloadsNote
             }
@@ -130,7 +127,7 @@ public enum LetsMove {
             // Move
             if needAuthorization {
                 var authorizationCanceled = false
-                if !authorizedInstall(srcPath: bundlePath, dstPath: destinationPath, canceled: &authorizationCanceled) {
+                if !authorizedInstall(srcURL: bundleURL, dstURL: destinationURL, canceled: &authorizationCanceled) {
                     if authorizationCanceled {
                         NSLog("INFO -- Not moving because user canceled authorization")
                         isInProgress = false
@@ -143,29 +140,28 @@ public enum LetsMove {
                 }
             } else {
                 // If a copy already exists in the Applications folder, put it in the Trash
-                if fm.fileExists(atPath: destinationPath) {
+                if (try? destinationURL.checkResourceIsReachable()) == true {
                     // But first, make sure that it's not running
-                    if isApplicationRunning(at: destinationPath) {
+                    if isApplicationRunning(at: destinationURL) {
                         // Give the running app focus and terminate myself
                         NSLog("INFO -- Switching to an already running version")
                         let task = Process()
                         task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-                        task.arguments = [destinationPath]
+                        task.arguments = [destinationURL.path]
                         try? task.run()
                         task.waitUntilExit()
                         isInProgress = false
                         exit(0)
                     } else {
-                        let existingPath = (applicationsDirectory as NSString).appendingPathComponent(bundleName)
-                        if !trash(existingPath) {
+                        if !trash(destinationURL) {
                             showFailureAlert()
                             return
                         }
                     }
                 }
 
-                if !copyBundle(srcPath: bundlePath, dstPath: destinationPath) {
-                    NSLog("ERROR -- Could not copy myself to \(destinationPath)")
+                if !copyBundle(srcURL: bundleURL, dstURL: destinationURL) {
+                    NSLog("ERROR -- Could not copy myself to \(destinationURL.path)")
                     showFailureAlert()
                     return
                 }
@@ -175,12 +171,12 @@ public enum LetsMove {
             // NOTE: This final delete does not work if the source bundle is in a network mounted volume.
             //       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
             //       but it'd be great if someone could fix this.
-            if !isNested && diskImageDevice == nil && !deleteOrTrash(bundlePath) {
+            if !isNested && diskImageDevice == nil && !deleteOrTrash(bundleURL) {
                 NSLog("WARNING -- Could not delete application after moving it to Applications folder")
             }
 
             // Relaunch.
-            relaunch(destinationPath: destinationPath)
+            relaunch(destinationPath: destinationURL.path)
 
             // Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
             // otherwise leave it mounted).
@@ -205,74 +201,68 @@ public enum LetsMove {
 
     // MARK: - Helper Functions
 
-    private static func preferredInstallLocation(isUserDirectory: inout Bool) -> String {
+    private static func preferredInstallLocation(isUserDirectory: inout Bool) -> URL {
         // Return the preferred install location.
         // Assume that if the user has a ~/Applications folder, they'd prefer their
         // applications to go there.
 
         let fm = FileManager.default
 
-        let userAppDirs = NSSearchPathForDirectoriesInDomains(.applicationDirectory, .userDomainMask, true)
+        if let userAppURL = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
+           (try? userAppURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true {
+            // User Applications directory exists. Get the directory contents.
+            let contents = (try? fm.contentsOfDirectory(at: userAppURL, includingPropertiesForKeys: nil)) ?? []
 
-        if let userAppDir = userAppDirs.first {
-            var isDir: ObjCBool = false
-
-            if fm.fileExists(atPath: userAppDir, isDirectory: &isDir) && isDir.boolValue {
-                // User Applications directory exists. Get the directory contents.
-                let contents = (try? fm.contentsOfDirectory(atPath: userAppDir)) ?? []
-
-                // Check if there is at least one ".app" inside the directory.
-                for item in contents where (item as NSString).pathExtension == "app" {
-                    isUserDirectory = true
-                    return (userAppDir as NSString).resolvingSymlinksInPath
-                }
+            // Check if there is at least one ".app" inside the directory.
+            for item in contents where item.pathExtension == "app" {
+                isUserDirectory = true
+                return userAppURL.resolvingSymlinksInPath()
             }
         }
 
         // No user Applications directory in use. Return the machine local Applications directory
         isUserDirectory = false
 
-        return ((NSSearchPathForDirectoriesInDomains(.applicationDirectory, .localDomainMask, true).last ?? "/Applications") as NSString).resolvingSymlinksInPath
+        let localAppURL = fm.urls(for: .applicationDirectory, in: .localDomainMask).last
+            ?? URL(fileURLWithPath: "/Applications")
+        return localAppURL.resolvingSymlinksInPath()
     }
 
-    private static func isInApplicationsFolder(_ path: String) -> Bool {
+    private static func isInApplicationsFolder(_ url: URL) -> Bool {
         // Check all the normal Application directories
-        let appDirs = NSSearchPathForDirectoriesInDomains(.applicationDirectory, .allDomainsMask, true)
-        for appDir in appDirs {
-            if path.hasPrefix(appDir) { return true }
+        let appURLs = FileManager.default.urls(for: .applicationDirectory, in: .allDomainsMask)
+        for appURL in appURLs {
+            if url.path.hasPrefix(appURL.path) { return true }
         }
 
         // Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
-        if (path as NSString).pathComponents.contains("Applications") { return true }
+        if url.pathComponents.contains("Applications") { return true }
 
         return false
     }
 
-    private static func isInDownloadsFolder(_ path: String) -> Bool {
-        let downloadDirs = NSSearchPathForDirectoriesInDomains(.downloadsDirectory, .allDomainsMask, true)
-        for downloadDir in downloadDirs {
-            if path.hasPrefix(downloadDir) { return true }
+    private static func isInDownloadsFolder(_ url: URL) -> Bool {
+        let downloadURLs = FileManager.default.urls(for: .downloadsDirectory, in: .allDomainsMask)
+        for downloadURL in downloadURLs {
+            if url.path.hasPrefix(downloadURL.path) { return true }
         }
 
         return false
     }
 
-    private static func isApplicationRunning(at bundlePath: String) -> Bool {
-        let standardizedPath = (bundlePath as NSString).standardizingPath
+    private static func isApplicationRunning(at bundleURL: URL) -> Bool {
+        let standardized = bundleURL.standardized
 
         for runningApp in NSWorkspace.shared.runningApplications {
-            if let path = runningApp.bundleURL?.path {
-                if (path as NSString).standardizingPath == standardizedPath {
-                    return true
-                }
+            if runningApp.bundleURL?.standardized == standardized {
+                return true
             }
         }
         return false
     }
 
-    private static func isApplicationNested(at path: String) -> Bool {
-        let components = ((path as NSString).deletingLastPathComponent as NSString).pathComponents
-        for component in components {
+    private static func isApplicationNested(at url: URL) -> Bool {
+        for component in url.deletingLastPathComponent().pathComponents {
             if (component as NSString).pathExtension == "app" {
                 return true
             }
@@ -281,12 +271,11 @@ public enum LetsMove {
         return false
     }
 
-    private static func diskImageDevice(containing path: String) -> String? {
-        let containingPath = (path as NSString).deletingLastPathComponent
+    private static func diskImageDevice(containing url: URL) -> String? {
+        let containingPath = url.deletingLastPathComponent().path
 
         var fs = statfs()
-        let nsContainingPath = containingPath as NSString
-        if statfs(nsContainingPath.fileSystemRepresentation, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
+        if statfs((containingPath as NSString).fileSystemRepresentation, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
             return nil
         }
 
@@ -321,14 +310,14 @@ public enum LetsMove {
         return nil
     }
 
-    private static func trash(_ path: String) -> Bool {
-        var result = (try? FileManager.default.trashItem(at: URL(fileURLWithPath: path), resultingItemURL: nil)) != nil
+    private static func trash(_ url: URL) -> Bool {
+        var result = (try? FileManager.default.trashItem(at: url, resultingItemURL: nil)) != nil
 
         // As a last resort try trashing with AppleScript.
         // This allows us to trash the app in macOS Sierra even when the app is running inside
         // an app translocation image.
         if !result {
-            let source = "set theFile to POSIX file \"\(path)\" \n" +
+            let source = "set theFile to POSIX file \"\(url.path)\" \n" +
                          "tell application \"Finder\" \n" +
                          "    move theFile to trash \n" +
                          "end tell"
@@ -342,23 +331,23 @@ public enum LetsMove {
         }
 
         if !result {
-            NSLog("ERROR -- Could not trash '\(path)'")
+            NSLog("ERROR -- Could not trash '\(url.path)'")
         }
 
         return result
     }
 
-    private static func deleteOrTrash(_ path: String) -> Bool {
+    private static func deleteOrTrash(_ url: URL) -> Bool {
         do {
-            try FileManager.default.removeItem(atPath: path)
+            try FileManager.default.removeItem(at: url)
             return true
         } catch {
             // Don't log warning if on Sierra and running inside App Translocation path
-            if !path.contains("/AppTranslocation/") {
-                NSLog("WARNING -- Could not delete '\(path)': \(error.localizedDescription)")
+            if !url.path.contains("/AppTranslocation/") {
+                NSLog("WARNING -- Could not delete '\(url.path)': \(error.localizedDescription)")
             }
 
-            return trash(path)
+            return trash(url)
         }
     }
 
@@ -372,16 +361,13 @@ public enum LetsMove {
 
     private static var authorizationExecuteWithPrivileges: AuthorizationExecuteWithPrivilegesType? = nil
 
-    private static func authorizedInstall(srcPath: String, dstPath: String, canceled: inout Bool) -> Bool {
+    private static func authorizedInstall(srcURL: URL, dstURL: URL, canceled: inout Bool) -> Bool {
         canceled = false
 
         // Make sure that the destination path is an app bundle. We're essentially running 'sudo rm -rf'
         // so we really don't want to fuck this up.
-        guard (dstPath as NSString).pathExtension == "app" else { return false }
-
-        // Do some more checks
-        guard !dstPath.trimmingCharacters(in: .whitespaces).isEmpty else { return false }
-        guard !srcPath.trimmingCharacters(in: .whitespaces).isEmpty else { return false }
+        guard dstURL.pathExtension == "app" else { return false }
+        guard !dstURL.path.isEmpty, !srcURL.path.isEmpty else { return false }
 
         var authRef: AuthorizationRef?
 
@@ -419,7 +405,7 @@ public enum LetsMove {
         guard let executeWithPrivileges = authorizationExecuteWithPrivileges else { return false }
 
         // Delete the destination
-        let deleteOK: Bool = dstPath.withCString { dstCStr in
+        let deleteOK: Bool = dstURL.path.withCString { dstCStr in
             var args: [UnsafeMutablePointer<CChar>?] = [strdup("-rf"), strdup(dstCStr), nil]
             defer { args.forEach { free($0) } }
             let err = args.withUnsafeMutableBufferPointer {
@@ -435,8 +421,8 @@ public enum LetsMove {
         guard deleteOK else { return false }
 
         // Copy
-        return srcPath.withCString { srcCStr in
-            dstPath.withCString { dstCStr in
+        return srcURL.path.withCString { srcCStr in
+            dstURL.path.withCString { dstCStr in
                 var args: [UnsafeMutablePointer<CChar>?] = [strdup("-pR"), strdup(srcCStr), strdup(dstCStr), nil]
                 defer { args.forEach { free($0) } }
                 let err = args.withUnsafeMutableBufferPointer {
@@ -452,12 +438,12 @@ public enum LetsMove {
         }
     }
 
-    private static func copyBundle(srcPath: String, dstPath: String) -> Bool {
+    private static func copyBundle(srcURL: URL, dstURL: URL) -> Bool {
         do {
-            try FileManager.default.copyItem(atPath: srcPath, toPath: dstPath)
+            try FileManager.default.copyItem(at: srcURL, to: dstURL)
             return true
         } catch {
-            NSLog("ERROR -- Could not copy '\(srcPath)' to '\(dstPath)' (\(error))")
+            NSLog("ERROR -- Could not copy '\(srcURL.path)' to '\(dstURL.path)' (\(error))")
             return false
         }
     }
