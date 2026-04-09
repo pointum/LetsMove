@@ -17,8 +17,6 @@ Does NOT support sandboxed applications.
 Usage
 -----
 
-### Swift Package Manager (Recommended)
-
 Add this Swift package to your project.
 Then, in your application delegate:
 
@@ -26,17 +24,9 @@ Then, in your application delegate:
 import LetsMove
 
 func applicationWillFinishLaunching(_ notification: Notification) {
-    PFMoveToApplicationsFolderIfNecessary()
+    LetsMove.moveToApplicationsFolderIfNecessary()
 }
 ```
-
-### Manual Integration
-
-Copy the following files from `Sources/LetsMove` into your project:
-
-- `include/LetsMove.h`
-- `LetsMove.swift`
-- `LetsMove.xcstrings` (if your application is localized)
 
 License
 -------
