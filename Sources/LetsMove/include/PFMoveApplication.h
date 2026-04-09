@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.h, version 1.25
+//  PFMoveApplication.h
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09

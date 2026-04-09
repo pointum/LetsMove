@@ -1,36 +1,43 @@
 LetsMove
 ========
 
-A sample project that demonstrates how to move a running macOS application to the Applications folder.
+A library that prompts users to move a running macOS application to the Applications folder.
 
 ![Screenshot](http://i.imgur.com/euTRZiI.png)
+
+[![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 
 
 Requirements
 ------------
-Builds and runs on macOS 10.11 or higher. Requires Xcode 15 or later to build. 
+Builds and runs on macOS 10.13 or higher. Requires Xcode 15 or later to build. 
 Does NOT support sandboxed applications.
 
 
 Usage
 -----
 
-Option 1:
+### Swift Package Manager (Recommended)
 
-Build then embed LetsMove.framework into your app.
+Add this Swift package to your project.
+Then, in your application delegate:
 
-Option 2:
+```swift
+import LetsMove
 
-Copy the following files into your project:
+func applicationWillFinishLaunching(_ notification: Notification) {
+    PFMoveToApplicationsFolderIfNecessary()
+}
+```
 
-- PFMoveApplication.h
-- PFMoveApplication.m
+### Manual Integration
 
-If your application is localized, also copy MoveApplication.xcstrings into your project.
+Copy the following files from `Sources/LetsMove` into your project:
 
-Link your application against Security.framework.
-
-In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
+- `include/PFMoveApplication.h`
+- `PFMoveApplication.m`
+- `MoveApplication.xcstrings` (if your application is localized)
+- Link your application against `Security.framework`
 
 
 License
@@ -42,6 +49,10 @@ Public domain
 Version History
 ---------------
 
+* 2.0.0
+	- Migrate project to Swift Package Manager
+	- Remove legacy Xcode project, CocoaPods, and Carthage support
+
 * 1.25
 	- Migrate localization strings to a string catalog (requires Xcode 15)
 	- Add Greek and Vietnamese localizations
@@ -50,25 +61,17 @@ Version History
 
 * 1.24
 	- Add PFMoveIsInProgress function
-	- Update project for Xcode 9.1
 
 * 1.23
-	- Fix localization not being used when built as a framework
-	- Fix backwards compatibility with OS X 10.9 and earlier being broken
 	- Make usable for Electron based apps or other apps that do not have access to the main thread dispatch queue
 	- Update Russian localization
 
 * 1.22
 	- Fix not deleting or trashing itself after copying to /Applications in macOS Sierra
 
-* 1.21
-	- Support for [Carthage](https://github.com/Carthage/Carthage) added
-	- Project now support OS X 10.6 and higher
-
 * 1.20
 	- Support for applications bundled inside another application
 	- Brazilian Portuguese localization slightly updated
-	- Build warnings fixed
 
 * 1.19
 	- Slovak localization added
@@ -77,60 +80,43 @@ Version History
 	- Catalan localization added
 
 * 1.17
-	- Tranditional Chinese localization added.
-
-* 1.16
-	- Deprecation warning that appears when minimum deployment target is set to OS X 10.10 taken care of
+	- Traditional Chinese localization added
 
 * 1.15
 	- Swedish localization added
 
 * 1.14
-	- Hugarian, Serbian, and Turkish localizations added
-	- Macedonian localization added
+	- Hungarian, Serbian, Turkish, and Macedonian localizations added
 
 * 1.13
 	- Polish localization added
 
 * 1.12
-	- Use country code based .lproj directories
-	- Make it compile for projects that don't use precompiled headers to import AppKit.framework
 	- Minor adjustment to Dutch localization
-	- Warning fixes in example project
 
 * 1.11
 	- Objective-C++ compatibility
 
-* 1.10
-	- Fixed deprecation warnings that show up when building against the OS X 10.9 SDK.
-
 * 1.9
-	- Removed OS X 10.4 support
 	- Properly detect if the running app is in a disk image
 	- Fixed a bug where if the app's name contained a quote, the app could not be moved
-	- After a successful move, delete the application instead of moving it to the Trash.
-	- Other fixes and improvements
+	- After a successful move, delete the application instead of moving it to the Trash
 
 * 1.8
 	- If the app is already there in the Applications folder but not writable, request authentication from user
 	- Added Korean localization
 
 * 1.7.2
-	- Fixed an exception that could happen.
-
-* 1.7.1
-	- Refactoring
+	- Fixed an exception that could happen
 
 * 1.7
-	- Only move to ~/Appilcations directory if an app is already in there.
+	- Only move to ~/Applications directory if an app is already in there
 
 * 1.6.3
-	- Function calls deprecated in 10.7 no longer cause compile time warnings.
 	- Added Simplified Chinese and European Portuguese localizations
 
 * 1.6.2
-	- Garbage collection compatibility added
-	- Use a new method to check if an application is already running on Mac OS X 10.6 systems or higher
+	- Use a new method to check if an application is already running
 
 * 1.6.1
 	- Use exit(0) to terminate the app before relaunching instead of [NSApp terminate:]. We don't want applicationShouldTerminate or applicationWillTerminate NSApplication delegate methods to be called, possibly introducing side effects.
@@ -138,22 +124,13 @@ Version History
 * 1.6
 	- Resolve any aliases when finding the Applications directory
 
-* 1.5.2
-	- Cleaned up the code a bit. Almost functionally equivalent to 1.5.1.
-
-* 1.5.1
-	- Fixed a bug with clearing the quarantine file attribute on Mac OS X 10.5
-
 * 1.5
 	- Don't prompt to move the application if it has "Applications" in its path somewhere
-
-* 1.4
-	- Mac OS X 10.5 compatibility fixes
 
 * 1.3
 	- Fixed a rare bug in the shell script that checks to see if the app is already running
 	- Clear quarantine flag after copying
-	- Compile time option to show normal sized alert supress checkbox button
+	- Compile time option to show normal sized alert suppress checkbox button
 	- German, Danish, and Norwegian localizations added
 
 * 1.2
@@ -163,9 +140,6 @@ Version History
 * 1.1
 	- Prefers ~/Applications over /Applications if it exists
 	- Escape key pushes the "Do Not Move" button
-
-* 1.0
-	- First release
 
 
 Code Contributors:
@@ -208,4 +182,4 @@ Translators:
 * aONe (Catalan)
 * Marek Hrusovsky (Slovak)
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+ 

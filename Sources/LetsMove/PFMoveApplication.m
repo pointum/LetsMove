@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.m, version 1.25
+//  PFMoveApplication.m
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
@@ -19,7 +19,11 @@
 
 @implementation LetsMove
 + (NSBundle *)bundle {
+#ifdef SWIFT_PACKAGE
+	return SWIFTPM_MODULE_BUNDLE;
+#else
 	return [NSBundle bundleForClass:self];
+#endif
 }
 @end
 
@@ -229,7 +233,7 @@ fail:
 	}
 }
 
-BOOL PFMoveIsInProgress() {
+BOOL PFMoveIsInProgress(void) {
     return MoveInProgress;
 }
 
