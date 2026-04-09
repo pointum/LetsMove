@@ -12,7 +12,7 @@ let package = Package(
         .target(
             name: "LetsMove",
             path: "Sources/LetsMove",
-            resources: [.process("MoveApplication.xcstrings")],
+            resources: [.process("LetsMove.xcstrings")],
             publicHeadersPath: "include"
         ),
     ]

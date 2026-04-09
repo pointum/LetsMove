@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.swift
+//  LetsMove.swift
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
@@ -22,7 +22,7 @@ private var letsMoveBundle: Bundle {
 // Strings
 // These are computed properties to be able to use custom i18n tools
 private func localizedString(_ key: String) -> String {
-    NSLocalizedString(key, tableName: "MoveApplication", bundle: letsMoveBundle, comment: "")
+    NSLocalizedString(key, tableName: "LetsMove", bundle: letsMoveBundle, comment: "")
 }
 
 private var strMoveApplicationCouldNotMove: String {
