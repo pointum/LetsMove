@@ -288,22 +288,29 @@ public enum LetsMove {
         guard (try? hdiutil.run()) != nil else { return nil }
         hdiutil.waitUntilExit()
 
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        guard let info = (try? PropertyListSerialization.propertyList(from: data, options: [], format: nil)) as? [String: Any] else { return nil }
+        struct HdiutilInfo: Decodable {
+            let images: [Image]
 
-        guard let images = info["images"] as? [[String: Any]] else { return nil }
+            struct Image: Decodable {
+                let systemEntities: [SystemEntity]?
+                enum CodingKeys: String, CodingKey { case systemEntities = "system-entities" }
 
-        for image in images {
-            guard let systemEntities = image["system-entities"] as? [[String: Any]] else { return nil }
-
-            for entity in systemEntities {
-                guard let devEntry = entity["dev-entry"] as? String else { return nil }
-
-                if devEntry == device { return device }
+                struct SystemEntity: Decodable {
+                    let devEntry: String?
+                    enum CodingKeys: String, CodingKey { case devEntry = "dev-entry" }
+                }
             }
         }
 
-        return nil
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        guard let info = try? PropertyListDecoder().decode(HdiutilInfo.self, from: data) else { return nil }
+
+        let isDiskImage = info.images.contains {
+            $0.systemEntities?.contains {
+                $0.devEntry == device
+            } ?? false
+        }
+        return isDiskImage ? device : nil
     }
 
     private static func trash(_ url: URL) -> Bool {
