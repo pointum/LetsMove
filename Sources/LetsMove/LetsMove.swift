@@ -67,11 +67,11 @@ public enum LetsMove {
         let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
         // Check if we need admin password to write to the Applications directory
-        var needAuthorization = (try? applicationsDirectory.resourceValues(forKeys: [.isWritableKey]))?.isWritable != true
+        var needAuthorization = !applicationsDirectory.isWritable
 
         // Check if the destination bundle is already there but not writable
-        if let destValues = try? destinationURL.resourceValues(forKeys: [.isWritableKey]) {
-            needAuthorization = needAuthorization || destValues.isWritable != true
+        if destinationURL.resourceExists {
+            needAuthorization = needAuthorization || !destinationURL.isWritable
         }
 
         // Setup the alert
@@ -83,7 +83,7 @@ public enum LetsMove {
 
             if needAuthorization {
                 informativeText += " " + requiresPasswordNote
-            } else if isInDownloadsFolder(bundleURL) {
+            } else if isURL(bundleURL, in: .downloadsDirectory) {
                 // Don't mention this stuff if we need authentication. The informative text is long enough as it is in that case.
                 informativeText += " " + downloadsNote
             }
@@ -139,7 +139,7 @@ public enum LetsMove {
                 }
             } else {
                 // If a copy already exists in the Applications folder, put it in the Trash
-                if (try? destinationURL.checkResourceIsReachable()) == true {
+                if destinationURL.resourceExists {
                     // But first, make sure that it's not running
                     if isApplicationRunning(at: destinationURL) {
                         // Give the running app focus and terminate myself
@@ -175,7 +175,7 @@ public enum LetsMove {
             }
 
             // Relaunch.
-            relaunch(destinationPath: destinationURL.path)
+            relaunch(destination: destinationURL)
 
             // Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
             // otherwise leave it mounted).
@@ -208,7 +208,7 @@ public enum LetsMove {
         let fm = FileManager.default
 
         if let userAppURL = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
-           (try? userAppURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true {
+           userAppURL.isDirectory {
             // User Applications directory exists. Get the directory contents.
             let contents = (try? fm.contentsOfDirectory(at: userAppURL, includingPropertiesForKeys: nil)) ?? []
 
@@ -224,42 +224,31 @@ public enum LetsMove {
         return (localAppURL.resolvingSymlinksInPath(), false)
     }
 
-    private static func isInApplicationsFolder(_ url: URL) -> Bool {
-        // Check all the normal Application directories
-        let appURLs = FileManager.default.urls(for: .applicationDirectory, in: .allDomainsMask)
-        for appURL in appURLs {
-            if url.path.hasPrefix(appURL.path) { return true }
+    private static func isURL(_ url: URL, in directory: FileManager.SearchPathDirectory) -> Bool {
+        let fm = FileManager.default
+        for directoryURL in fm.urls(for: directory, in: .allDomainsMask) {
+            var relationship: FileManager.URLRelationship = .other
+            try? fm.getRelationship(&relationship, ofDirectoryAt: directoryURL, toItemAt: url)
+            if relationship == .contains { return true }
         }
-
-        // Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
-        if url.pathComponents.contains("Applications") { return true }
-
         return false
     }
 
-    private static func isInDownloadsFolder(_ url: URL) -> Bool {
-        let downloadURLs = FileManager.default.urls(for: .downloadsDirectory, in: .allDomainsMask)
-        for downloadURL in downloadURLs {
-            if url.path.hasPrefix(downloadURL.path) { return true }
-        }
-
-        return false
+    private static func isInApplicationsFolder(_ url: URL) -> Bool {
+        // Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
+        isURL(url, in: .applicationDirectory) || url.pathComponents.contains("Applications")
     }
 
     private static func isApplicationRunning(at bundleURL: URL) -> Bool {
-        let standardized = bundleURL.standardized
-
-        for runningApp in NSWorkspace.shared.runningApplications {
-            if runningApp.bundleURL?.standardized == standardized {
-                return true
-            }
+        guard let id = bundleURL.fileResourceIdentifier else { return false }
+        return NSWorkspace.shared.runningApplications.contains {
+            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } ?? false
         }
-        return false
     }
 
     private static func isApplicationNested(at url: URL) -> Bool {
         for component in url.deletingLastPathComponent().pathComponents {
-            if (component as NSString).pathExtension == "app" {
+            if component.hasSuffix(".app") {
                 return true
             }
         }
@@ -453,12 +442,12 @@ public enum LetsMove {
         "'\(string.replacingOccurrences(of: "'", with: "'\\''"))'"
     }
 
-    private static func relaunch(destinationPath: String) {
+    private static func relaunch(destination: URL) {
         // The shell script waits until the original app process terminates.
         // This is done so that the relaunched app opens as the front-most app.
         let pid = ProcessInfo.processInfo.processIdentifier
 
-        let quotedDestinationPath = shellQuoted(destinationPath)
+        let quotedDestinationPath = shellQuoted(destination.path)
 
         // Command run just before running open /final/path
         // Before we launch the new app, clear xattr:com.apple.quarantine to avoid
@@ -472,5 +461,23 @@ public enum LetsMove {
         task.executableURL = URL(fileURLWithPath: "/bin/sh")
         task.arguments = ["-c", script]
         try? task.run()
+    }
+}
+
+private extension URL {
+    var resourceExists: Bool {
+        (try? checkResourceIsReachable()) == true
+    }
+
+    var isDirectory: Bool {
+        (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }
+
+    var isWritable: Bool {
+        (try? resourceValues(forKeys: [.isWritableKey]))?.isWritable == true
+    }
+
+    var fileResourceIdentifier: (any NSCopying & NSSecureCoding & NSObjectProtocol)? {
+        try? resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier
     }
 }
