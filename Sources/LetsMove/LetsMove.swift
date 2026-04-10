@@ -150,11 +150,11 @@ public enum LetsMove {
                 }
             }
 
-            // Trash the original app. It's okay if this fails.
-            // NOTE: This final delete does not work if the source bundle is in a network mounted volume.
-            //       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
-            //       but it'd be great if someone could fix this.
-            if !hasParentApp && removableDevicePath == nil && !bundleURL.deleteOrMoveToTrash() {
+            // It's okay if deleting original fails.
+            // NOTE: This can fail in these known cases:
+            // - The source bundle is on a network mounted volume
+            // - The app was translocated and cannot modify itself
+            if !hasParentApp && removableDevicePath == nil && !bundleURL.delete() {
                 NSLog("WARNING -- Could not delete application after moving it to Applications folder")
             }
 

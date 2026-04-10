@@ -47,37 +47,20 @@ extension URL {
     func moveToTrash() -> Bool {
         do {
             try FileManager.default.trashItem(at: self, resultingItemURL: nil)
-            return true
-        } catch {}
-
-        // As a last resort try trashing with AppleScript.
-        // This allows us to trash the app in macOS Sierra even when the app is running inside
-        // an app translocation image.
-        let source = """
-            set theFile to POSIX file "\(path)"
-            tell application "Finder"
-                move theFile to trash
-            end tell
-            """
-        var errorDict: NSDictionary?
-        let result = NSAppleScript(source: source)?.executeAndReturnError(&errorDict)
-        if result == nil {
-            NSLog("Trash AppleScript error: %@", errorDict ?? [:])
-            NSLog("ERROR -- Could not trash '\(path)'")
+        } catch {
+            NSLog("WARNING -- Could not trash '\(path)': \(error.localizedDescription)")
+            return false
         }
-        return result != nil
+
+        return true
     }
 
-    func deleteOrMoveToTrash() -> Bool {
+    func delete() -> Bool {
         do {
             try FileManager.default.removeItem(at: self)
             return true
         } catch {
-            // Don't log warning if on Sierra and running inside App Translocation path
-            if !path.contains("/AppTranslocation/") {
-                NSLog("WARNING -- Could not delete '\(path)': \(error.localizedDescription)")
-            }
-            return moveToTrash()
+            return false
         }
     }
 
