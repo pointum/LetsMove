@@ -1,14 +1,174 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Could not move to Applications folder" : {
-      "extractionState" : "manual",
+    "ALERT_TITLE" : {
       "generatesSymbol" : false,
       "localizations" : {
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha pogut traslladar a la carpeta d'Aplicacions"
+            "value" : "%@ no es troba a la carpeta Apps."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ není ve složce Aplikace."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ er ikke i mappen Apps."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„%@“ ist nicht im Programme-Ordner."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το «%@» δεν βρίσκεται στον φάκελο Εφαρμογές."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is not in the Applications folder."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no está en la carpeta Aplicaciones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ n’est pas dans le dossier Applications."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A(z) %@ nem az Alkalmazások mappában van."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ non è nella cartella Applicazioni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」は「アプリケーション」フォルダにありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@이(가) 응용 프로그램 폴더에 없습니다."
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ не се наоѓа во папката Апликации."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ er ikke i mappen Apper."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ bevindt zich niet in de map Apps."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nie znajduje się w folderze Aplikacje."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ não está na pasta Aplicativos."
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ não está na pasta Aplicações."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» не находится в папке «Программы»."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sa nenachádza v priečinku Aplikácie."
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ није у фасцикли Апликације."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ finns inte i mappen Appar."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\", Uygulamalar klasöründe değil."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ không có trong thư mục Ứng dụng."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@不在“应用程序”文件夹中。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@不在“應用程式”檔案夾中。"
+          }
+        }
+      }
+    },
+    "COULD_NOT_MOVE" : {
+      "generatesSymbol" : false,
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s’ha pogut traslladar a la carpeta Apps"
           }
         },
         "cs" : {
@@ -20,25 +180,25 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunne ikke flytte til mappen Programmer"
+            "value" : "Kunne ikke flytte til mappen Apps"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Anwendung konnte nicht in den Programme-Ordner verschoben werden."
+            "value" : "Die Anwendung konnte nicht in den Programme-Ordner verschoben werden"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η μετακίνηση στο φάκελο Εφαρμογές"
+            "value" : "Δεν ήταν δυνατή η μετακίνηση στον φάκελο Εφαρμογές"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Could not move to Applications folder"
+            "value" : "Could Not Move to Applications Folder"
           }
         },
         "es" : {
@@ -50,7 +210,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ne peut pas être déplacé dans le dossier Applications"
+            "value" : "Impossible de déplacer vers le dossier Applications"
           }
         },
         "hu" : {
@@ -62,49 +222,49 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non posso spostarmi nella cartella Applicazioni"
+            "value" : "Impossibile spostare nella cartella Applicazioni"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アプリケーションフォルダに移動できませんでした"
+            "value" : "「アプリケーション」フォルダに移動できませんでした"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "애플리케이션 폴더로 이동할 수 없음"
+            "value" : "응용 프로그램 폴더로 이동할 수 없음"
           }
         },
         "mk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не можев да се преместам во Апликациската папка"
+            "value" : "Не може да се премести во папката Апликации"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunne ikke flytte til mappen Programmer"
+            "value" : "Kunne ikke flytte til mappen Apper"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kon niet verplaatsen naar de Programma's map"
+            "value" : "Kon niet verplaatsen naar de map Apps"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie mogę przenieść do folderu Programy"
+            "value" : "Nie można przenieść do folderu Aplikacje"
           }
         },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível mover para Aplicativos"
+            "value" : "Não foi possível mover para a pasta Aplicativos"
           }
         },
         "pt_PT" : {
@@ -122,25 +282,25 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Presun do priečinku Aplikácie nebol umožnený."
+            "value" : "Presun do priečinka Aplikácie sa nepodaril"
           }
         },
         "sr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Премештање није успело"
+            "value" : "Није могуће преместити у фасциклу Апликације"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunde inte flytta till programmappen"
+            "value" : "Kunde inte flytta till mappen Appar"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Applications klasörüne taşınamadı"
+            "value" : "Uygulamalar klasörüne taşınamadı"
           }
         },
         "vi" : {
@@ -163,8 +323,7 @@
         }
       }
     },
-    "Do Not Move" : {
-      "extractionState" : "manual",
+    "DONT_BUTTON" : {
       "generatesSymbol" : false,
       "localizations" : {
         "ca" : {
@@ -194,13 +353,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Μην μετακινείτε"
+            "value" : "Μην μετακινήσετε"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Do Not Move"
+            "value" : "Don’t Move"
           }
         },
         "es" : {
@@ -218,13 +377,13 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nincs áthelyezés"
+            "value" : "Ne helyezze át"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non spostarmi"
+            "value" : "Non spostare"
           }
         },
         "ja" : {
@@ -308,7 +467,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không chuyển ứng dụng"
+            "value" : "Không chuyển"
           }
         },
         "zh-Hans" : {
@@ -325,686 +484,37 @@
         }
       }
     },
-    "I can move myself to the Applications folder if you'd like." : {
-      "extractionState" : "manual",
+    "DOWNLOADS_NOTE" : {
       "generatesSymbol" : false,
       "localizations" : {
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta aplicació pot traslladar-se automàticament a la carpeta d'Aplicacions."
+            "value" : "Així tindràs la carpeta Descàrregues més endreçada."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přejete-li si to, lze přesunout aplikaci do složky Aplikace."
+            "value" : "Umožní vám to mít složku Stahování přehlednou."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jeg kan flytte mig selv til mappen Programmer, hvis du ønsker det."
+            "value" : "Dette hjælper til med at holde orden i mappen Overførsler."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ich kann mich selbst in den Programme-Ordner verschieben, wenn Sie möchten."
+            "value" : "Damit bleibt Ihr Ordner „Downloads” aufgeräumt."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Μπορώ να μετακινηθώ στον φάκελο Εφαρμογές, εάν θέλετε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "I can move myself to the Applications folder if you'd like."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta aplicación puede trasladarse automáticamente a la carpeta Aplicaciones."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Je peux me déplacer moi-même dans le dossier Applications si vous le souhaitez."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ha szeretné, át tudom helyezni magamat az Alkalmazások mappába."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posso spostarmi nella cartella Applicazioni se vuoi."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "このアプリケーションを\"アプリケーション\"フォルダに移動できます。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "원하실 경우 애플리케이션 폴더로 이동할 수 있습니다."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Можам да се преместам сам во Апликациската папка ако сакате."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jeg kan flytte meg selv til mappen Programmer hvis du ønsker det."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ik kan mezelf naar de Programma's map verplaatsen als u dat wilt."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jeśli chcesz, rzecz zostanie automatycznie przeniesiona do folderu Programy."
-          }
-        },
-        "pt_BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posso ir para a pasta Aplicativos se você quiser."
-          }
-        },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posso mover-me para a pasta Aplicações se desejar."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Если хотите, я могу переместить себя в папку «Программы»."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ak si želáte, presuniem sa do priečinku Aplikácie."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ако желите, сам ћу се преместити у фасциклу са апликацијама."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jag kan flytta mig själv till programmappen om du vill."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İsterseniz uygulama Applications klasörüne taşınabilir."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ứng dụng này có thể tự chuyển đến thư mục Ứng Dụng nếu bạn muốn."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我要自己把程序移动到“应用程序”文件夹中。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我要自己把應用程式移動到“應用程式”檔案夾中。"
-          }
-        }
-      }
-    },
-    "Move to Applications Folder" : {
-      "extractionState" : "manual",
-      "generatesSymbol" : false,
-      "localizations" : {
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Traslladar a la carpeta d'Aplicacions"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přesunout do složky Aplikace"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flyt til mappen Programmer"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In den Programme-Ordner verschieben"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μετακίνηση στο φάκελο Εφαρμογές"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move to Applications Folder"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trasladar a la carpeta Aplicaciones"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer dans le dossier Applications"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áthelyezés az Alkalmazások mappába"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spostami nella cartella Applicazioni"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリケーションフォルダに移動する"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "애플리케이션 폴더로 이동"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Премести во Апликациската папка"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytt til mappen Programmer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaats naar Programma's map"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenieś do folderu Programy"
-          }
-        },
-        "pt_BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para Aplicativos"
-          }
-        },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переместить в папку «Программы»"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunúť do priečinku Aplikácie"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Премести"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytta till programmappen"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Applications Klasörüne Taşınsın"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chuyển đến thư mục Ứng dụng"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移动到“应用程序”文件夹中"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移動到“應用程式”檔案夾中"
-          }
-        }
-      }
-    },
-    "Move to Applications folder in your Home folder?" : {
-      "extractionState" : "manual",
-      "generatesSymbol" : false,
-      "localizations" : {
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Desitja moure l'aplicació a la seva carpeta d'Aplicacions personal?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přesunout do složky Aplikace v domovské složce?"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flyt til mappen Programmer i din hjemmemappe?"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In den Programme-Ordner in Ihrem Heimatverzeichnis verschieben?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Μετακίνηση στο φάκελο Εφαρμογές στο Αρχικό φάκελο"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move to Applications folder in your Home folder?"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Deseas trasladar la aplicación a la carpeta Aplicaciones?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer vers le dossier Application dans le dossier de l'utilisateur?"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áthelyezés a Saját mappa Alkalmazások mappájába?"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vuoi spostarmi nella cartella Applicazioni del tuo utente?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ホームフォルダ内の\"アプリケーション\"フォルダに移動しますか？"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "홈 폴더의 애플리케이션 폴더로 이동합니까?"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Премести во Апликациската папка во вашата Дома папка?"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytt til mappen Programmer i din hjemmemappe?"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaatsen naar Programma's map in uw persoonlijke map?"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenieść do folderu Programy w twoim katalogu domowym?"
-          }
-        },
-        "pt_BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para Aplicativos na sua pasta Pessoal?"
-          }
-        },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações na sua pasta Pessoal?"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переместить в папку «Программы», расположенную в папке пользователя?"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunúť do priečinku Aplikácie v domovskom adresáry?"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Преместити у фасциклу са апликацијама која се налази у основној фасцикли?"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytta till programmappen i din hemmamapp?"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Applications klasörü Kullanıcı klasörünüze taşınsın mı?"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chuyển đến thư mục Ứng dụng trong thư mục Home của bạn?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "是否要把程序移动到你的个人文件夹里的“应用程序”文件夹中？"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "是否要把程式移動到你的個人檔案夾裡的“應用程式”檔案夾中？"
-          }
-        }
-      }
-    },
-    "Move to Applications folder?" : {
-      "extractionState" : "manual",
-      "generatesSymbol" : false,
-      "localizations" : {
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Desitja moure l'aplicació a la carpeta d'Aplicacions?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přesunout do složky Aplikace?"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flyt til mappen Programmer?"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In den Programme-Ordner verschieben?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Θέλετε να μετακινηθεί στο φάκελο Εφαρμογές"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move to Applications folder?"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Deseas trasladar la aplicación a la carpeta Aplicaciones?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer dans le dossier Applications?"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áthelyezés az Alkalmazások mappába?"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vuoi spostarmi nella cartella Applicazioni?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"アプリケーション\"フォルダに移動しますか？"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "애플리케이션 폴더로 이동합니까?"
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Премести во Апликациската папка?"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytt til mappen Programmer?"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaatsen naar Programma's map?"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przenieść do folderu Programy?"
-          }
-        },
-        "pt_BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para Aplicativos?"
-          }
-        },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações?"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переместить в папку «Программы»?"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presunúť do priečinku Aplikácie?"
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Преместити у фасциклу са апликацијама?"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flytta till programmappen?"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Application Klasörüne Taşınma"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chuyển đến thư mục Ứng dụng?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "是否要把程序移动到“应用程序”文件夹中？"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "是否要把程式移動到“應用程式”檔案夾中？"
-          }
-        }
-      }
-    },
-    "This will keep your Downloads folder uncluttered." : {
-      "extractionState" : "manual",
-      "generatesSymbol" : false,
-      "localizations" : {
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Així tindràs la carpeta de Baixades més endreçada."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Umožní vám to mít složku Stahování/Downloads přehlednou."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dette hjælper til med at holde orden i mappen Overførsler"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Damit Ihr Downloads-Ordner aufgeräumt wird."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτό θα κρατήσει το φάκελο Λήψεις τακτοποιημένο."
+            "value" : "Αυτό θα κρατήσει τον φάκελο Λήψεών σας τακτοποιημένο."
           }
         },
         "en" : {
@@ -1016,7 +526,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De este modo podrás ordenar mejor la carpeta Descargas."
+            "value" : "De este modo podrás ordenar mejor tu carpeta Descargas."
           }
         },
         "fr" : {
@@ -1040,7 +550,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これにより\"ダウンロード\"フォルダを整理できます。"
+            "value" : "これにより「ダウンロード」フォルダを整理できます。"
           }
         },
         "ko" : {
@@ -1058,25 +568,25 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dette hjelper til med å holde orden i mappen Nedlastinger."
+            "value" : "Dette hjelper til med å holde orden i Nedlastinger-mappen."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Op deze manier blijft uw Downloads-map schoon."
+            "value" : "Op deze manier blijft uw map 'Downloads' schoon."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dzięki temu unikniesz bałaganu w folderze Pobrane rzeczy."
+            "value" : "Dzięki temu unikniesz bałaganu w Twoim folderze Pobrane rzeczy."
           }
         },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Isto manterá a pasta Transferências organizada."
+            "value" : "Isto manterá a pasta Downloads organizada."
           }
         },
         "pt_PT" : {
@@ -1088,13 +598,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Это поможет содержать папку загрузок в порядке."
+            "value" : "Это поможет содержать Вашу папку «Загрузки» в порядке."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Umožní Vám to udržať prečinok Stiahnuté usporiadaný."
+            "value" : "Umožní Vám to udržať priečinok Stiahnuté usporiadaný."
           }
         },
         "sr" : {
@@ -1106,19 +616,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detta kommer att hålla din hämtningsmapp städad."
+            "value" : "Detta kommer att hålla mappen Hämtningar städad."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu işlem İndirmeler klasörünün dağılmasını engeller."
+            "value" : "Bu işlem İndirilenler klasörünün dağılmasını engeller."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Việc này sẽ giúp thư mục Tải xuống của bạn trở nên sạch sẽ hơn."
+            "value" : "Việc này sẽ giúp thư mục Tải về của bạn trở nên sạch sẽ hơn."
           }
         },
         "zh-Hans" : {
@@ -1130,7 +640,490 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "這樣做能讓你的“下載項目”檔案夾保持乾淨。"
+            "value" : "這樣做能讓你的「下載項目」檔案夾保持乾淨。"
+          }
+        }
+      }
+    },
+    "MOVE_BUTTON" : {
+      "generatesSymbol" : false,
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traslladar i reobrir"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přesunout a znovu otevřít"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flyt og åbn igen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschieben und erneut öffnen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μετακίνηση και εκ νέου άνοιγμα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move & Reopen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trasladar y volver a abrir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplacer et rouvrir"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áthelyezés és ismételt megnyitás"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta e riapri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移動して再度開く"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동 및 다시 열기"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Премести и повторно отвори"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt og åpne igjen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verplaats en open opnieuw"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś i otwórz ponownie"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover e Reabrir"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover e voltar a abrir"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переместить и открыть снова"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť a znovu otvoriť"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Премести и поново отвори"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytta och öppna igen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taşı ve Yeniden Aç"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuyển và mở lại"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移动并重新打开"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移動並重新開啟"
+          }
+        }
+      }
+    },
+    "MOVE_TO_APPS" : {
+      "generatesSymbol" : false,
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vols traslladar-la allà?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chcete ji tam přesunout?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du flytte det dertil?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchten Sie sie dorthin verschieben?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θέλετε να το μετακινήσετε εκεί;"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you want to move it there?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quieres trasladarla allí?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous la déplacer là ?"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szeretné oda áthelyezni?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuoi spostarlo lì?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "そこに移動しますか?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 앱을 그곳으로 이동하시겠습니까?"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дали сакате да го преместите таму?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du flytte den dit?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wilt u het daarheen verplaatsen?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy chcesz go tam przenieść?"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deseja movê-lo para lá?"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deseja movê-lo para aí?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хотите переместить его туда?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chcete ho tam presunúť?"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Желите ли да га тамо преместите?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vill du flytta det dit?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oraya taşımak ister misiniz?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có muốn chuyển nó đến đó không?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您想将它移动到那里吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您想將它移動到那裡嗎？"
+          }
+        }
+      }
+    },
+    "MOVE_TO_HOME" : {
+      "generatesSymbol" : false,
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vols traslladar-la a Apps a la teva carpeta d’inici?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chcete ji přesunout do složky Aplikace ve vaší domovské složce?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du flytte det til Apps i din hjemmemappe?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchten Sie sie in den Programme-Ordner in Ihrem Benutzerordner verschieben?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θέλετε να το μετακινήσετε στις Εφαρμογές στο φάκελο Αρχική σας;"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you want to move it to Applications in your Home folder?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quieres trasladarla a Aplicaciones en tu carpeta de inicio?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous la déplacer dans Applications dans votre dossier personnel ?"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szeretné áthelyezni az Alkalmazások mappába a saját mappájában?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuoi spostarlo in Applicazioni nella tua cartella Home?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホームフォルダの「アプリケーション」に移動しますか?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 앱을 홈 폴더의 응용 프로그램으로 이동하시겠습니까?"
+          }
+        },
+        "mk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дали сакате да го преместите во Апликации во вашата почетна папка?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du flytte den til Apper i hjemmemappen din?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wilt u het verplaatsen naar Apps in uw thuismap?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy chcesz go przenieść do folderu Aplikacje w folderze domowym?"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deseja movê-lo para Aplicativos na sua pasta pessoal?"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deseja movê-lo para Aplicações na sua pasta pessoal?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хотите переместить его в папку «Программы» в вашей домашней папке?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chcete ho presunúť do priečinku Aplikácie vo vašom domovskom priečinku?"
+          }
+        },
+        "sr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Желите ли да га преместите у Апликације у вашем почетном фолдеру?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vill du flytta det till Appar i din hemkatalog?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ana klasörünüzdeki Uygulamalar’a taşımak ister misiniz?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có muốn chuyển nó đến Ứng dụng trong thư mục Trang chủ của bạn không?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您想将它移动到主文件夹中的“应用程序”吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您想將它移動到主檔案夾中的“應用程式”嗎？"
           }
         }
       }

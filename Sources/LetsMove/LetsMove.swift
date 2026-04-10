@@ -9,17 +9,26 @@
 import AppKit
 
 public enum LetsMove {
-    // Strings are computed properties to allow custom i18n tooling to intercept.
-    private static var couldNotMoveAlertTitle: String { localizedString("Could not move to Applications folder") }
-    private static var moveAlertTitle: String { localizedString("Move to Applications folder?") }
-    private static var moveAlertTitleHome: String { localizedString("Move to Applications folder in your Home folder?") }
-    private static var moveAlertMessage: String { localizedString("I can move myself to the Applications folder if you'd like.") }
-    private static var moveButtonTitle: String { localizedString("Move to Applications Folder") }
-    private static var doNotMoveButtonTitle: String { localizedString("Do Not Move") }
-    private static var downloadsNote: String { localizedString("This will keep your Downloads folder uncluttered.") }
-
-    private static func localizedString(_ key: String) -> String {
-        NSLocalizedString(key, tableName: "LetsMove", bundle: Bundle.module, comment: "")
+    private static var couldNotMoveTitle: String {
+        NSLocalizedString("COULD_NOT_MOVE", bundle: .module, comment: "")
+    }
+    private static func alertTitle(with appName: String) -> String {
+        String(format: NSLocalizedString("ALERT_TITLE", bundle: .module, comment: ""), appName)
+    }
+    private static var alertMessage: String {
+        NSLocalizedString("MOVE_TO_APPS", bundle: .module, comment: "")
+    }
+    private static var alertMessageHome: String {
+        NSLocalizedString("MOVE_TO_HOME", bundle: .module, comment: "")
+    }
+    private static var moveButtonTitle: String {
+        NSLocalizedString("MOVE_BUTTON", bundle: .module, comment: "")
+    }
+    private static var dontMoveButtonTitle: String {
+        NSLocalizedString("DONT_BUTTON", bundle: .module, comment: "")
+    }
+    private static var downloadsNote: String {
+        NSLocalizedString("DOWNLOADS_NOTE", bundle: .module, comment: "")
     }
 
     // By default, we use a small control/font for the suppression button.
@@ -65,10 +74,13 @@ public enum LetsMove {
         let removableDevicePath = bundleURL.removableDevicePath
 
         // Setup the alert
-        let alert = NSAlert()
-        alert.messageText = installToUserApplications ? moveAlertTitleHome : moveAlertTitle
+        let appName = NSRunningApplication.current.localizedName
+                   ?? bundleURL.deletingPathExtension().lastPathComponent
 
-        var informativeText = moveAlertMessage
+        let alert = NSAlert()
+        alert.messageText = alertTitle(with: appName)
+
+        var informativeText = installToUserApplications ? alertMessageHome : alertMessage
         if bundleURL.isContained(in: .downloadsDirectory) {
             informativeText += " " + downloadsNote
         }
@@ -76,7 +88,7 @@ public enum LetsMove {
 
         alert.addButton(withTitle: moveButtonTitle)
 
-        let cancelButton = alert.addButton(withTitle: doNotMoveButtonTitle)
+        let cancelButton = alert.addButton(withTitle: dontMoveButtonTitle)
         cancelButton.keyEquivalent = "\u{1b}" // Escape key
 
         alert.showsSuppressionButton = true
@@ -92,7 +104,7 @@ public enum LetsMove {
 
         func showFailureAlert() {
             let failAlert = NSAlert()
-            failAlert.messageText = couldNotMoveAlertTitle
+            failAlert.messageText = couldNotMoveTitle
             failAlert.runModal()
             isInProgress = false
         }
@@ -101,14 +113,9 @@ public enum LetsMove {
             NSLog("INFO -- Moving myself to the Applications folder")
 
             // If a copy already exists in the Applications folder, make sure it's not running
-            if destinationURL.resourceExists && destinationURL.isApplicationRunning {
-                // Give the running app focus and terminate myself
-                NSLog("INFO -- Switching to an already running version")
-                let task = Process()
-                task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-                task.arguments = [destinationURL.path]
-                try? task.run()
-                task.waitUntilExit()
+            if destinationURL.isApplicationRunning {
+                // Give the running app focus and quit
+                openRunning(at: destinationURL)
                 isInProgress = false
                 exit(0)
             }
@@ -177,7 +184,6 @@ public enum LetsMove {
         return nil
     }
 
-
     private static func copyBundle(srcURL: URL, dstURL: URL) -> Bool {
         do {
             try FileManager.default.copyItem(at: srcURL, to: dstURL)
@@ -186,6 +192,15 @@ public enum LetsMove {
             NSLog("ERROR -- Could not copy '\(srcURL.path)' to '\(dstURL.path)' (\(error))")
             return false
         }
+    }
+
+    private static func openRunning(at url: URL) {
+        NSLog("INFO -- Switching to an already running version")
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        task.arguments = [url.path]
+        try? task.run()
+        task.waitUntilExit()
     }
 
     private static func shellQuoted(_ string: String) -> String {
@@ -203,9 +218,9 @@ public enum LetsMove {
         // Before we launch the new app, clear xattr:com.apple.quarantine to avoid
         // duplicate "scary file from the internet" dialog.
 
-        let preOpenCmd = "/usr/bin/xattr -d -r com.apple.quarantine \(quotedDestinationPath)"
+        let removeQuarantine = "/usr/bin/xattr -d -r com.apple.quarantine \(quotedDestinationPath)"
 
-        let script = "(while /bin/kill -0 \(pid) >&/dev/null; do /bin/sleep 0.1; done; \(preOpenCmd); /usr/bin/open \(quotedDestinationPath)) &"
+        let script = "(while /bin/kill -0 \(pid) >&/dev/null; do /bin/sleep 0.1; done; \(removeQuarantine); /usr/bin/open \(quotedDestinationPath)) &"
 
         let task = Process()
         task.executableURL = URL(fileURLWithPath: "/bin/sh")

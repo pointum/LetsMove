@@ -6,13 +6,13 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.macOS(.v10_13)],
     products: [
-        .library(name: "LetsMove", targets: ["LetsMove"]),
+        .library(name: "LetsMove", targets: ["LetsMove"])
     ],
     targets: [
         .target(
             name: "LetsMove",
             path: "Sources/LetsMove",
-            resources: [.process("LetsMove.xcstrings")]
-        ),
+            resources: [.process("Localizable.xcstrings")]
+        )
     ]
 )
