@@ -4,6 +4,12 @@
     "ALERT_TITLE" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ليس في مجلد التطبيقات."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46,16 +52,40 @@
             "value" : "%@ no está en la carpeta Aplicaciones."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ei ole Apit-kansiossa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ n’est pas dans le dossier Applications."
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ אינו בתיקיית יישומים."
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nije u mapi Aplikacije."
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A(z) %@ nem az Alkalmazások mappában van."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tidak ada di folder Aplikasi."
           }
         },
         "it" : {
@@ -80,6 +110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ не се наоѓа во папката Апликации."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tidak berada dalam folder Aplikasi."
           }
         },
         "nb" : {
@@ -112,6 +148,12 @@
             "value" : "%@ não está na pasta Aplicações."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nu se află în folderul Aplicații."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136,10 +178,22 @@
             "value" : "%@ finns inte i mappen Appar."
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ไม่ได้อยู่ในโฟลเดอร์แอปพลิเคชัน"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\", Uygulamalar klasöründe değil."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ не у папці «Програми»."
           }
         },
         "vi" : {
@@ -165,6 +219,12 @@
     "COULD_NOT_MOVE" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر النقل إلى مجلد التطبيقات"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -207,16 +267,40 @@
             "value" : "No se ha podido trasladar a la carpeta Aplicaciones"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirtäminen Apit-kansioon ei onnistunut"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible de déplacer vers le dossier Applications"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "לא ניתן להעביר לתיקיית יישומים"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premještanje u mapu Aplikacije nije uspjelo"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nem sikerült áthelyezni az Alkalmazások mappába"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak Dapat Dipindahkan ke Folder Aplikasi"
           }
         },
         "it" : {
@@ -241,6 +325,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не може да се премести во папката Апликации"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak Dapat Dipindahkan ke Folder Aplikasi"
           }
         },
         "nb" : {
@@ -273,6 +363,12 @@
             "value" : "Não foi possível mover para a pasta Aplicações"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu s-a putut muta în folderul Aplicații"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -297,10 +393,22 @@
             "value" : "Kunde inte flytta till mappen Appar"
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่สามารถย้ายไปยังโฟลเดอร์แอปพลิเคชันได้"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulamalar klasörüne taşınamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося перемістити до папки «Програми»"
           }
         },
         "vi" : {
@@ -326,6 +434,12 @@
     "DONT_BUTTON" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا تنقل"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -368,16 +482,40 @@
             "value" : "No trasladar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älä siirrä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ne pas déplacer"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אל תעביר"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemoj premjestiti"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ne helyezze át"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jangan Pindahkan"
           }
         },
         "it" : {
@@ -402,6 +540,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не преместувај"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jangan Pindahkan"
           }
         },
         "nb" : {
@@ -434,6 +578,12 @@
             "value" : "Não mover"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu muta"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -458,10 +608,22 @@
             "value" : "Flytta inte"
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่ย้าย"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Taşınmasın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не переміщати"
           }
         },
         "vi" : {
@@ -487,6 +649,12 @@
     "DOWNLOADS_NOTE" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيُبقي هذا مجلد التنزيلات مرتّبًا."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -529,16 +697,40 @@
             "value" : "De este modo podrás ordenar mejor tu carpeta Descargas."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä pitää Lataukset-kansion siistinä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ceci permet de ne pas encombrer votre dossier Téléchargements."
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כך תיקיית ההורדות תישאר מסודרת."
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time ćete mapu Preuzimanja zadržati urednom."
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Így a Letöltések mappa rendezettebbé válik."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ini akan membuat folder Unduhan Anda tetap rapi."
           }
         },
         "it" : {
@@ -563,6 +755,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ова ќе помогне вашата папка за Преземања да биде чиста."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ini akan memastikan folder Muat Turun anda sentiasa kemas."
           }
         },
         "nb" : {
@@ -595,6 +793,12 @@
             "value" : "Isto irá manter a sua pasta Descargas organizada."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceasta va menține folderul Descărcări ordonat."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -619,10 +823,22 @@
             "value" : "Detta kommer att hålla mappen Hämtningar städad."
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วิธีนี้จะช่วยให้โฟลเดอร์รายการดาวน์โหลดของคุณไม่รกรุงรัง"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu işlem İndirilenler klasörünün dağılmasını engeller."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Це допоможе підтримувати папку «Викачане» в порядку."
           }
         },
         "vi" : {
@@ -648,6 +864,12 @@
     "MOVE_BUTTON" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نقل وإعادة الفتح"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -690,16 +912,40 @@
             "value" : "Trasladar y volver a abrir"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä ja avaa uudelleen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Déplacer et rouvrir"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "העבר ופתח מחדש"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premjesti i otvori ponovo"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Áthelyezés és ismételt megnyitás"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindahkan & Buka Ulang"
           }
         },
         "it" : {
@@ -724,6 +970,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Премести и повторно отвори"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindahkan & Buka Semula"
           }
         },
         "nb" : {
@@ -756,6 +1008,12 @@
             "value" : "Mover e voltar a abrir"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mută și redeschide"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -780,10 +1038,22 @@
             "value" : "Flytta och öppna igen"
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ย้ายและเปิดใหม่"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Taşı ve Yeniden Aç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемістити та відкрити знову"
           }
         },
         "vi" : {
@@ -809,6 +1079,12 @@
     "MOVE_TO_APPS" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد نقله إلى هناك؟"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -851,16 +1127,40 @@
             "value" : "¿Quieres trasladarla allí?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haluatko siirtää sen sinne?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous la déplacer là ?"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "האם ברצונך להעביר אותו לשם?"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Želite li ga premjestiti tamo?"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szeretné oda áthelyezni?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apakah Anda ingin memindahkannya ke sana?"
           }
         },
         "it" : {
@@ -885,6 +1185,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дали сакате да го преместите таму?"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adakah anda mahu memindahkannya ke sana?"
           }
         },
         "nb" : {
@@ -917,6 +1223,12 @@
             "value" : "Deseja movê-lo para aí?"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doriți să îl mutați acolo?"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -941,10 +1253,22 @@
             "value" : "Vill du flytta det dit?"
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คุณต้องการย้ายไปที่นั่นหรือไม่?"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oraya taşımak ister misiniz?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бажаєте перемістити його туди?"
           }
         },
         "vi" : {
@@ -970,6 +1294,12 @@
     "MOVE_TO_HOME" : {
       "generatesSymbol" : false,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد نقله إلى التطبيقات في مجلد المنزل؟"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1012,16 +1342,40 @@
             "value" : "¿Quieres trasladarla a Aplicaciones en tu carpeta de inicio?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haluatko siirtää sen Apit-kansioon kotikansiossasi?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous la déplacer dans Applications dans votre dossier personnel ?"
           }
         },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "האם ברצונך להעביר אותו לתיקיית יישומים בתיקיית הבית שלך?"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Želite li ga premjestiti u Aplikacije u vašoj početnoj mapi?"
+          }
+        },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szeretné áthelyezni az Alkalmazások mappába a saját mappájában?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apakah Anda ingin memindahkannya ke Aplikasi di folder Rumah Anda?"
           }
         },
         "it" : {
@@ -1046,6 +1400,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дали сакате да го преместите во Апликации во вашата почетна папка?"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adakah anda mahu memindahkannya ke Aplikasi dalam folder Utama anda?"
           }
         },
         "nb" : {
@@ -1078,6 +1438,12 @@
             "value" : "Deseja movê-lo para Aplicações na sua pasta pessoal?"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doriți să îl mutați în Aplicații din folderul dvs. de Acasă?"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1102,10 +1468,22 @@
             "value" : "Vill du flytta det till Appar i din hemkatalog?"
           }
         },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คุณต้องการย้ายไปยังแอปพลิเคชันในโฟลเดอร์หลักของคุณหรือไม่?"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ana klasörünüzdeki Uygulamalar’a taşımak ister misiniz?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бажаєте перемістити його до папки «Програми» у вашій домашній папці?"
           }
         },
         "vi" : {

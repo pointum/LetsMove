@@ -1,12 +1,13 @@
 LetsMove
 ========
 
-A library that prompts users to move a running macOS application to the Applications folder.
-
-![Screenshot](http://i.imgur.com/euTRZiI.png)
+A library that prompts users to move a running macOS application to the Applications folder. This fork is maintained for use in my [HazeOver](https://hazeover.com) app.
 
 [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 
+<p align=center>
+<img src="https://imgur.com/5jMKB60.png" width=372 height=394 alt="Let's Move Alert Screenshot">
+</p>
 
 Requirements
 ------------
@@ -37,14 +38,14 @@ Public domain
 Version History
 ---------------
 
-* Unreleased
+* 2.0.0
+	- Converted to Swift
+	- Migrated project to Swift Package Manager
 	- Removed AppleScript Trash workaround
 	- Removed privileged installer
 	- Skip alert if won’t be able to move
-
-* 2.0.0
-	- Migrated project to Swift Package Manager
-	- Removed legacy Xcode project, CocoaPods, and Carthage support
+	- Removed Xcode project, CocoaPods, and Carthage support
+	- Updated localizations
 
 * 1.25
 	- Migrate localization strings to a string catalog (requires Xcode 15)
