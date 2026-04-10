@@ -38,8 +38,9 @@ Version History
 ---------------
 
 * Unreleased
-	- Fix privileged installer ignoring EINTR (originally reported in [issue #73](https://github.com/potionfactory/LetsMove/issues/73))
+	- Fix privileged installer ignoring EINTR ([issue #73](https://github.com/potionfactory/LetsMove/issues/73))
 	- Removed AppleScript Trash workaround
+	- Check for running app before privileged install
 
 * 2.0.0
 	- Migrate project to Swift Package Manager

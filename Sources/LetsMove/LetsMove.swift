@@ -107,6 +107,19 @@ public enum LetsMove {
         if alert.runModal() == .alertFirstButtonReturn {
             NSLog("INFO -- Moving myself to the Applications folder")
 
+            // If a copy already exists in the Applications folder, make sure it's not running
+            if destinationURL.resourceExists && destinationURL.isApplicationRunning {
+                // Give the running app focus and terminate myself
+                NSLog("INFO -- Switching to an already running version")
+                let task = Process()
+                task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+                task.arguments = [destinationURL.path]
+                try? task.run()
+                task.waitUntilExit()
+                isInProgress = false
+                exit(0)
+            }
+
             // Move
             if needAuthorization {
                 switch privilegedInstaller.install(from: bundleURL, to: destinationURL) {
@@ -124,22 +137,9 @@ public enum LetsMove {
             } else {
                 // If a copy already exists in the Applications folder, put it in the Trash
                 if destinationURL.resourceExists {
-                    // But first, make sure that it's not running
-                    if destinationURL.isApplicationRunning {
-                        // Give the running app focus and terminate myself
-                        NSLog("INFO -- Switching to an already running version")
-                        let task = Process()
-                        task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-                        task.arguments = [destinationURL.path]
-                        try? task.run()
-                        task.waitUntilExit()
-                        isInProgress = false
-                        exit(0)
-                    } else {
-                        if !destinationURL.moveToTrash() {
-                            showFailureAlert()
-                            return
-                        }
+                    if !destinationURL.moveToTrash() {
+                        showFailureAlert()
+                        return
                     }
                 }
 
@@ -171,7 +171,6 @@ public enum LetsMove {
                 try? task.run()
             }
 
-            isInProgress = false
             exit(0)
         }
         // Save the alert suppress preference if checked
