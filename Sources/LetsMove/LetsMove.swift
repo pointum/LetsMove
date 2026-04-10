@@ -45,6 +45,7 @@ public enum LetsMove {
 
         // URL of the bundle
         let bundleURL = Bundle.main.bundleURL
+        guard bundleURL.pathExtension == "app" else { return }
 
         // Check if the bundle is embedded in another application
         let hasParentApp = bundleURL.hasParentApp
@@ -53,15 +54,15 @@ public enum LetsMove {
         // unless it's inside another app's bundle.
         guard !bundleURL.isInApplicationsFolder || hasParentApp else { return }
 
-        // OK, looks like we'll need to do a move - set the status variable appropriately
+        // Skip if won't be able to move
+        guard let (applicationsDirectory, installToUserApplications) = preferredInstallLocation() else { return }
+        let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
+        guard !destinationURL.resourceExists || destinationURL.isWritable else { return }
+
         isInProgress = true
 
         // Are we on a disk image?
         let removableDevicePath = bundleURL.removableDevicePath
-
-        // Since we are good to go, get the preferred installation directory.
-        let (applicationsDirectory, installToUserApplications) = preferredInstallLocation()
-        let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
         // Setup the alert
         let alert = NSAlert()
@@ -159,27 +160,21 @@ public enum LetsMove {
 
     // MARK: - Helper Functions
 
-    private static func preferredInstallLocation() -> (url: URL, isUserDirectory: Bool) {
-        // Return the preferred install location.
-        // Assume that if the user has a ~/Applications folder, they'd prefer their
-        // applications to go there.
-
+    private static func preferredInstallLocation() -> (url: URL, isUserDirectory: Bool)? {
+        // Prefer ~/Applications if the user already has apps there.
         let fm = FileManager.default
 
-        if let userAppURL = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
-           userAppURL.isDirectory,
-           let enumerator = fm.enumerator(at: userAppURL, includingPropertiesForKeys: nil,
+        if let userAppsFolder = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
+           let enumerator = fm.enumerator(at: userAppsFolder, includingPropertiesForKeys: nil,
                                           options: .skipsSubdirectoryDescendants) {
             let hasAnApp = enumerator.contains { ($0 as? URL)?.pathExtension == "app" }
-            if hasAnApp {
-                return (userAppURL.resolvingSymlinksInPath(), true)
-            }
+            if hasAnApp && userAppsFolder.isWritable { return (userAppsFolder, true) }
         }
 
-        // No user Applications directory in use. Return the machine local Applications directory
-        let localAppURL = fm.urls(for: .applicationDirectory, in: .localDomainMask).last
-            ?? URL(fileURLWithPath: "/Applications")
-        return (localAppURL.resolvingSymlinksInPath(), false)
+        guard let localAppsFolder = fm.urls(for: .applicationDirectory, in: .localDomainMask).last else { return nil }
+        if localAppsFolder.isWritable { return (localAppsFolder, false) }
+
+        return nil
     }
 
 

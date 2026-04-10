@@ -6,10 +6,6 @@ extension URL {
         (try? checkResourceIsReachable()) == true
     }
 
-    var isDirectory: Bool {
-        (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
-    }
-
     var isWritable: Bool {
         (try? resourceValues(forKeys: [.isWritableKey]))?.isWritable == true
     }

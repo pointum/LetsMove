@@ -40,6 +40,7 @@ Version History
 * Unreleased
 	- Removed AppleScript Trash workaround
 	- Removed privileged installer
+	- Skip alert if won’t be able to move
 
 * 2.0.0
 	- Migrated project to Swift Package Manager
