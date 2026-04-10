@@ -38,13 +38,12 @@ Version History
 ---------------
 
 * Unreleased
-	- Fix privileged installer ignoring EINTR ([issue #73](https://github.com/potionfactory/LetsMove/issues/73))
 	- Removed AppleScript Trash workaround
-	- Check for running app before privileged install
+	- Removed privileged installer
 
 * 2.0.0
-	- Migrate project to Swift Package Manager
-	- Remove legacy Xcode project, CocoaPods, and Carthage support
+	- Migrated project to Swift Package Manager
+	- Removed legacy Xcode project, CocoaPods, and Carthage support
 
 * 1.25
 	- Migrate localization strings to a string catalog (requires Xcode 15)
@@ -96,7 +95,6 @@ Version History
 	- After a successful move, delete the application instead of moving it to the Trash
 
 * 1.8
-	- If the app is already there in the Applications folder but not writable, request authentication from user
 	- Added Korean localization
 
 * 1.7.2

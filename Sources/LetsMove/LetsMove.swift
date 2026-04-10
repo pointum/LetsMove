@@ -16,7 +16,6 @@ public enum LetsMove {
     private static var moveAlertMessage: String { localizedString("I can move myself to the Applications folder if you'd like.") }
     private static var moveButtonTitle: String { localizedString("Move to Applications Folder") }
     private static var doNotMoveButtonTitle: String { localizedString("Do Not Move") }
-    private static var requiresPasswordNote: String { localizedString("Note that this will require an administrator password.") }
     private static var downloadsNote: String { localizedString("This will keep your Downloads folder uncluttered.") }
 
     private static func localizedString(_ key: String) -> String {
@@ -64,19 +63,12 @@ public enum LetsMove {
         let (applicationsDirectory, installToUserApplications) = preferredInstallLocation()
         let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
 
-        // Check if we need admin password to write to the Applications directory
-        let needAuthorization = !applicationsDirectory.isWritable
-            || (destinationURL.resourceExists && !destinationURL.isWritable)
-
         // Setup the alert
         let alert = NSAlert()
         alert.messageText = installToUserApplications ? moveAlertTitleHome : moveAlertTitle
 
         var informativeText = moveAlertMessage
-        if needAuthorization {
-            informativeText += " " + requiresPasswordNote
-        } else if bundleURL.isContained(in: .downloadsDirectory) {
-            // Don't mention this stuff if we need authentication. The informative text is long enough as it is in that case.
+        if bundleURL.isContained(in: .downloadsDirectory) {
             informativeText += " " + downloadsNote
         }
         alert.informativeText = informativeText
@@ -120,34 +112,18 @@ public enum LetsMove {
                 exit(0)
             }
 
-            // Move
-            if needAuthorization {
-                switch privilegedInstaller.install(from: bundleURL, to: destinationURL) {
-                case .success:
-                    break
-                case .failed:
-                    NSLog("ERROR -- Could not copy myself to /Applications with authorization")
+            // If a copy already exists in the Applications folder, put it in the Trash
+            if destinationURL.resourceExists {
+                if !destinationURL.moveToTrash() {
                     showFailureAlert()
                     return
-                case .canceled:
-                    NSLog("INFO -- Not moving because user canceled authorization")
-                    isInProgress = false
-                    return
                 }
-            } else {
-                // If a copy already exists in the Applications folder, put it in the Trash
-                if destinationURL.resourceExists {
-                    if !destinationURL.moveToTrash() {
-                        showFailureAlert()
-                        return
-                    }
-                }
+            }
 
-                if !copyBundle(srcURL: bundleURL, dstURL: destinationURL) {
-                    NSLog("ERROR -- Could not copy myself to \(destinationURL.path)")
-                    showFailureAlert()
-                    return
-                }
+            if !copyBundle(srcURL: bundleURL, dstURL: destinationURL) {
+                NSLog("ERROR -- Could not copy myself to \(destinationURL.path)")
+                showFailureAlert()
+                return
             }
 
             // It's okay if deleting original fails.
@@ -206,8 +182,6 @@ public enum LetsMove {
         return (localAppURL.resolvingSymlinksInPath(), false)
     }
 
-
-    private static let privilegedInstaller = PrivilegedInstaller()
 
     private static func copyBundle(srcURL: URL, dstURL: URL) -> Bool {
         do {

@@ -101,16 +101,16 @@
             "value" : "Nie mogę przenieść do folderu Programy"
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível mover para a pasta Aplicações"
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não foi possível mover para Aplicativos"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível mover para a pasta Aplicações"
           }
         },
         "ru" : {
@@ -263,16 +263,16 @@
             "value" : "Nie przenoś"
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não mover"
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não Mover"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não mover"
           }
         },
         "ru" : {
@@ -425,16 +425,16 @@
             "value" : "Jeśli chcesz, rzecz zostanie automatycznie przeniesiona do folderu Programy."
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Posso mover-me para a pasta Aplicações se desejar."
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Posso ir para a pasta Aplicativos se você quiser."
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posso mover-me para a pasta Aplicações se desejar."
           }
         },
         "ru" : {
@@ -587,16 +587,16 @@
             "value" : "Przenieś do folderu Programy"
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações"
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para Aplicativos"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover para a pasta Aplicações"
           }
         },
         "ru" : {
@@ -749,16 +749,16 @@
             "value" : "Przenieść do folderu Programy w twoim katalogu domowym?"
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações na sua pasta Pessoal?"
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para Aplicativos na sua pasta Pessoal?"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover para a pasta Aplicações na sua pasta Pessoal?"
           }
         },
         "ru" : {
@@ -911,16 +911,16 @@
             "value" : "Przenieść do folderu Programy?"
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a pasta Aplicações?"
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para Aplicativos?"
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover para a pasta Aplicações?"
           }
         },
         "ru" : {
@@ -969,168 +969,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "是否要把程式移動到“應用程式”檔案夾中？"
-          }
-        }
-      }
-    },
-    "Note that this will require an administrator password." : {
-      "extractionState" : "manual",
-      "generatesSymbol" : false,
-      "localizations" : {
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aquesta operació requereix un compte d'administrador."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poznámka: Tato akce vyžaduje oprávnění pro správu systému."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bemærk, at dette kræver en administrator-adgangskode."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitte beachten Sie, dass für diesen Vorgang ein Administrator-Passwort benötigt wird."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Σημειώστε ότι αυτό θα απαιτήσει κωδικό πρόσβασης από τον διαχειριστή."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Note that this will require an administrator password."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se requiere contraseña de administrador."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notez que vous aurez besoin de votre mot de passe administrateur."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vegye figyelembe, hogy ehhez rendszergazdai jelszó szükséges."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nota richiede la password di amministratore."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この操作には管理者パスワードが必要です。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 작업은 관리자 비밀번호를 필요로 합니다."
-          }
-        },
-        "mk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Оваа акција ќе ја побара вашата администраторска шифра"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vær oppmerksom på at dette vil kreve et administrator-passord."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Let op: dit vereist een wachtwoord van een beheerder."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ta operacja będzie wymagała podania hasła administratora."
-          }
-        },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atenção que isto irá necessitar da palavra-passe de administrador."
-          }
-        },
-        "pt_BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Será necessário uma senha de administrador."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вам понадобится пароль администратора."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Táto akcia vyžaduje heslo správcu systému."
-          }
-        },
-        "sr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Мораћете да унесете лозинку администратора."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detta kräver ett administratörslösenord."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu işlem için yönetici parolasının isteneceğeni unutmayın."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Để chuyển ứng dụng này, bạn cần nhập mật khẩu của quản trị viên."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "注意，本操作需要你输入管理员密码。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "注意，這將會需要輸入管理者密碼。"
           }
         }
       }
@@ -1235,16 +1073,16 @@
             "value" : "Dzięki temu unikniesz bałaganu w folderze Pobrane rzeczy."
           }
         },
-        "pt_PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Isto irá manter a sua pasta Descargas organizada."
-          }
-        },
         "pt_BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Isto manterá a pasta Transferências organizada."
+          }
+        },
+        "pt_PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isto irá manter a sua pasta Descargas organizada."
           }
         },
         "ru" : {
