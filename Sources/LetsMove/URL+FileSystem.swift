@@ -32,7 +32,7 @@ extension URL {
     var isApplicationRunning: Bool {
         guard let id = fileResourceIdentifier else { return false }
         return NSWorkspace.shared.runningApplications.contains {
-            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } ?? false
+            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } == true
         }
     }
 

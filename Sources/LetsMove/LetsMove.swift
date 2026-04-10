@@ -114,8 +114,7 @@ public enum LetsMove {
 
             // If a copy already exists in the Applications folder, make sure it's not running
             if destinationURL.isApplicationRunning {
-                // Give the running app focus and quit
-                openRunning(at: destinationURL)
+                NSWorkspace.shared.open(destinationURL)
                 isInProgress = false
                 exit(0)
             }
@@ -192,15 +191,6 @@ public enum LetsMove {
             NSLog("ERROR -- Could not copy '\(srcURL.path)' to '\(dstURL.path)' (\(error))")
             return false
         }
-    }
-
-    private static func openRunning(at url: URL) {
-        NSLog("INFO -- Switching to an already running version")
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-        task.arguments = [url.path]
-        try? task.run()
-        task.waitUntilExit()
     }
 
     private static func shellQuoted(_ string: String) -> String {
