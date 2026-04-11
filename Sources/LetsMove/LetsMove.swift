@@ -50,7 +50,6 @@ public enum LetsMove {
         // Skip if user suppressed the alert before
         guard !UserDefaults.standard.bool(forKey: alertSuppressKey) else { return }
 
-        // URL of the bundle
         let bundleURL = Bundle.main.bundleURL
         guard bundleURL.pathExtension == "app" else { return }
 
@@ -67,6 +66,7 @@ public enum LetsMove {
         guard !destinationURL.resourceExists || destinationURL.isWritable else { return }
 
         isInProgress = true
+        defer { isInProgress = false }
 
         // Workaround for focus issues related to Gatekeeper dialog
         DispatchQueue.main.async {
@@ -76,72 +76,53 @@ public enum LetsMove {
         let alert = alertToMove(toHomeFolder: installToUserApplications,
                                 fromDownloads: bundleURL.isContained(in: .downloadsDirectory))
 
-        if alert.runModal() == .alertFirstButtonReturn {
-            NSLog("INFO -- Moving myself to the Applications folder")
-
-            // If a copy already exists in the Applications folder, make sure it's not running
-            if destinationURL.isApplicationRunning {
-                NSWorkspace.shared.open(destinationURL)
-                exit(0)
+        guard alert.runModal() == .alertFirstButtonReturn else {
+            // Save suppress preference if skipping the move
+            if alert.suppressionButton?.state == .on {
+                UserDefaults.standard.set(true, forKey: alertSuppressKey)
             }
+            return
+        }
 
-            func showFailureAlert(_ error: Error) {
-                NSAlert(error: error).runModal()
-                isInProgress = false
-            }
-
-            if destinationURL.resourceExists {
-                do {
-                    try FileManager.default.trashItem(at: destinationURL, resultingItemURL: nil)
-                } catch {
-                    showFailureAlert(error)
-                    return
-                }
-            }
-
-            do {
-                try FileManager.default.copyItem(at: bundleURL, to: destinationURL)
-            } catch {
-                NSLog("ERROR -- Could not copy myself to \(destinationURL.path): \(error)")
-                showFailureAlert(error)
-                return
-            }
-
-            let removableDevicePath = bundleURL.removableDevicePath
-
-            // It's okay if deleting original fails.
-            // NOTE: This can fail in these known cases:
-            // - The source bundle is on a network mounted volume
-            // - The app was translocated and cannot modify itself
-            if !hasParentApp, removableDevicePath == nil {
-                do {
-                    try FileManager.default.removeItem(at: bundleURL)
-                } catch {
-                    NSLog("WARNING -- Could not delete application after moving it to Applications folder")
-                }
-            }
-
-            // Relaunch.
-            relaunch(destination: destinationURL)
-
-            // Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
-            // otherwise leave it mounted).
-            if let device = removableDevicePath, !hasParentApp {
-                let script = "(/bin/sleep 5 && /usr/bin/hdiutil detach \(shellQuoted(device))) &"
-                let task = Process()
-                task.executableURL = URL(fileURLWithPath: "/bin/sh")
-                task.arguments = ["-c", script]
-                try? task.run()
-            }
-
+        // If a copy already exists in the Applications folder, make sure it's not running
+        if destinationURL.isApplicationRunning {
+            NSWorkspace.shared.open(destinationURL)
             exit(0)
         }
-        // Save the alert suppress preference if checked
-        else if alert.suppressionButton?.state == .on {
-            UserDefaults.standard.set(true, forKey: alertSuppressKey)
+
+        let fm = FileManager.default
+
+        do {
+            if destinationURL.resourceExists {
+                try fm.trashItem(at: destinationURL, resultingItemURL: nil)
+            }
+            try fm.copyItem(at: bundleURL, to: destinationURL)
+        } catch {
+            NSAlert(error: error).runModal()
+            return
         }
 
-        isInProgress = false
+        let removableDevicePath = bundleURL.removableDevicePath
+
+        // It's okay if deleting original fails.
+        // NOTE: This can fail in these known cases:
+        // - The source bundle is on a network mounted volume
+        // - The app was translocated and cannot modify itself
+        if !hasParentApp, removableDevicePath == nil {
+            do {
+                try fm.removeItem(at: bundleURL)
+            } catch {
+                NSLog("WARNING -- Could not delete application after moving it to Applications folder")
+            }
+        }
+
+        relaunch(destination: destinationURL)
+
+        if let removableDevicePath, !hasParentApp {
+            unmountDiskImage(at: removableDevicePath)
+        }
+
+        exit(0)
     }
 
     // MARK: - Helper Functions
@@ -192,6 +173,14 @@ public enum LetsMove {
 
     private static func shellQuoted(_ string: String) -> String {
         "'\(string.replacingOccurrences(of: "'", with: "'\\''"))'"
+    }
+
+    private static func unmountDiskImage(at devicePath: String) {
+        let script = "(/bin/sleep 5 && /usr/bin/hdiutil detach \(shellQuoted(devicePath))) &"
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/bin/sh")
+        task.arguments = ["-c", script]
+        try? task.run()
     }
 
     private static func relaunch(destination: URL) {
