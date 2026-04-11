@@ -97,16 +97,9 @@ public enum LetsMove {
             alert.suppressionButton?.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         }
 
-        // Activate app -- work-around for focus issues related to "scary file from internet" OS dialog.
-        if !NSApp.isActive {
+        // Workaround for focus issues related to Gatekeeper dialog
+        DispatchQueue.main.async {
             NSApp.activate(ignoringOtherApps: true)
-        }
-
-        func showFailureAlert() {
-            let failAlert = NSAlert()
-            failAlert.messageText = couldNotMoveTitle
-            failAlert.runModal()
-            isInProgress = false
         }
 
         if alert.runModal() == .alertFirstButtonReturn {
@@ -115,8 +108,14 @@ public enum LetsMove {
             // If a copy already exists in the Applications folder, make sure it's not running
             if destinationURL.isApplicationRunning {
                 NSWorkspace.shared.open(destinationURL)
-                isInProgress = false
                 exit(0)
+            }
+
+            func showFailureAlert() {
+                let failAlert = NSAlert()
+                failAlert.messageText = couldNotMoveTitle
+                failAlert.runModal()
+                isInProgress = false
             }
 
             // If a copy already exists in the Applications folder, put it in the Trash

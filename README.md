@@ -44,7 +44,8 @@ Version History
 	- Removed AppleScript Trash workaround
 	- Removed privileged installer
 	- Skip alert if won’t be able to move
-	- Removed Xcode project, CocoaPods, and Carthage support
+	- Removed CocoaPods and Carthage support
+	- Removed demo app project
 	- Updated localizations
 
 * 1.25

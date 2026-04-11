@@ -1,5 +1,4 @@
 import AppKit
-import Darwin
 
 extension URL {
     var resourceExists: Bool {
