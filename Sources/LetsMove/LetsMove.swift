@@ -68,34 +68,13 @@ public enum LetsMove {
 
         isInProgress = true
 
-        // Setup the alert
-        let appName = NSRunningApplication.current.localizedName
-                   ?? bundleURL.deletingPathExtension().lastPathComponent
-
-        let alert = NSAlert()
-        alert.messageText = alertTitle(with: appName)
-
-        var informativeText = installToUserApplications ? alertMessageHome : alertMessage
-        if bundleURL.isContained(in: .downloadsDirectory) {
-            informativeText += " " + downloadsNote
-        }
-        alert.informativeText = informativeText
-
-        alert.addButton(withTitle: moveButtonTitle)
-
-        let cancelButton = alert.addButton(withTitle: dontMoveButtonTitle)
-        cancelButton.keyEquivalent = "\u{1b}" // Escape key
-
-        alert.showsSuppressionButton = true
-        if usesSmallSuppressionCheckbox {
-            alert.suppressionButton?.controlSize = .small
-            alert.suppressionButton?.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-        }
-
         // Workaround for focus issues related to Gatekeeper dialog
         DispatchQueue.main.async {
             NSApp.activate(ignoringOtherApps: true)
         }
+
+        let alert = alertToMove(toHomeFolder: installToUserApplications,
+                                fromDownloads: bundleURL.isContained(in: .downloadsDirectory))
 
         if alert.runModal() == .alertFirstButtonReturn {
             NSLog("INFO -- Moving myself to the Applications folder")
@@ -167,13 +146,40 @@ public enum LetsMove {
 
     // MARK: - Helper Functions
 
+    private static func alertToMove(toHomeFolder: Bool, fromDownloads: Bool) -> NSAlert {
+        let alert = NSAlert()
+
+        let appName = NSRunningApplication.current.localizedName
+                   ?? ProcessInfo.processInfo.processName
+        alert.messageText = alertTitle(with: appName)
+
+        var informativeText = toHomeFolder ? alertMessageHome : alertMessage
+        if fromDownloads {
+            informativeText += " " + downloadsNote
+        }
+        alert.informativeText = informativeText
+
+        alert.addButton(withTitle: moveButtonTitle)
+
+        let cancelButton = alert.addButton(withTitle: dontMoveButtonTitle)
+        cancelButton.keyEquivalent = "\u{1b}" // Escape key
+
+        alert.showsSuppressionButton = true
+        if usesSmallSuppressionCheckbox {
+            alert.suppressionButton?.controlSize = .small
+            alert.suppressionButton?.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        }
+
+        return alert
+    }
+
     private static func preferredInstallLocation() -> (url: URL, isUserDirectory: Bool)? {
         // Prefer ~/Applications if the user already has apps there.
         let fm = FileManager.default
 
         if let userAppsFolder = fm.urls(for: .applicationDirectory, in: .userDomainMask).first,
            let enumerator = fm.enumerator(at: userAppsFolder, includingPropertiesForKeys: nil,
-                                          options: .skipsSubdirectoryDescendants) {
+                                          options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]) {
             let hasAnApp = enumerator.contains { ($0 as? URL)?.pathExtension == "app" }
             if hasAnApp && userAppsFolder.isWritable { return (userAppsFolder, true) }
         }
