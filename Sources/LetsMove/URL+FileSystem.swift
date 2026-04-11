@@ -39,26 +39,6 @@ extension URL {
         deletingLastPathComponent().pathComponents.contains { $0.hasSuffix(".app") }
     }
 
-    func moveToTrash() -> Bool {
-        do {
-            try FileManager.default.trashItem(at: self, resultingItemURL: nil)
-        } catch {
-            NSLog("WARNING -- Could not trash '\(path)': \(error.localizedDescription)")
-            return false
-        }
-
-        return true
-    }
-
-    func delete() -> Bool {
-        do {
-            try FileManager.default.removeItem(at: self)
-            return true
-        } catch {
-            return false
-        }
-    }
-
     var removableDevicePath: String? {
         let containingPath = deletingLastPathComponent().path
 

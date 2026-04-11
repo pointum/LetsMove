@@ -3,15 +3,13 @@
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
+//  Rewritten in Swift by Maxim Ananov 04/08/2026
 //
 //  The contents of this file are dedicated to the public domain.
 
 import AppKit
 
 public enum LetsMove {
-    private static var couldNotMoveTitle: String {
-        NSLocalizedString("COULD_NOT_MOVE", bundle: .module, comment: "")
-    }
     private static func alertTitle(with appName: String) -> String {
         String(format: NSLocalizedString("ALERT_TITLE", bundle: .module, comment: ""), appName)
     }
@@ -70,9 +68,6 @@ public enum LetsMove {
 
         isInProgress = true
 
-        // Are we on a disk image?
-        let removableDevicePath = bundleURL.removableDevicePath
-
         // Setup the alert
         let appName = NSRunningApplication.current.localizedName
                    ?? bundleURL.deletingPathExtension().lastPathComponent
@@ -111,33 +106,40 @@ public enum LetsMove {
                 exit(0)
             }
 
-            func showFailureAlert() {
-                let failAlert = NSAlert()
-                failAlert.messageText = couldNotMoveTitle
-                failAlert.runModal()
+            func showFailureAlert(_ error: Error) {
+                NSAlert(error: error).runModal()
                 isInProgress = false
             }
 
-            // If a copy already exists in the Applications folder, put it in the Trash
             if destinationURL.resourceExists {
-                if !destinationURL.moveToTrash() {
-                    showFailureAlert()
+                do {
+                    try FileManager.default.trashItem(at: destinationURL, resultingItemURL: nil)
+                } catch {
+                    showFailureAlert(error)
                     return
                 }
             }
 
-            if !copyBundle(srcURL: bundleURL, dstURL: destinationURL) {
-                NSLog("ERROR -- Could not copy myself to \(destinationURL.path)")
-                showFailureAlert()
+            do {
+                try FileManager.default.copyItem(at: bundleURL, to: destinationURL)
+            } catch {
+                NSLog("ERROR -- Could not copy myself to \(destinationURL.path): \(error)")
+                showFailureAlert(error)
                 return
             }
+
+            let removableDevicePath = bundleURL.removableDevicePath
 
             // It's okay if deleting original fails.
             // NOTE: This can fail in these known cases:
             // - The source bundle is on a network mounted volume
             // - The app was translocated and cannot modify itself
-            if !hasParentApp && removableDevicePath == nil && !bundleURL.delete() {
-                NSLog("WARNING -- Could not delete application after moving it to Applications folder")
+            if !hasParentApp, removableDevicePath == nil {
+                do {
+                    try FileManager.default.removeItem(at: bundleURL)
+                } catch {
+                    NSLog("WARNING -- Could not delete application after moving it to Applications folder")
+                }
             }
 
             // Relaunch.
@@ -180,16 +182,6 @@ public enum LetsMove {
         if localAppsFolder.isWritable { return (localAppsFolder, false) }
 
         return nil
-    }
-
-    private static func copyBundle(srcURL: URL, dstURL: URL) -> Bool {
-        do {
-            try FileManager.default.copyItem(at: srcURL, to: dstURL)
-            return true
-        } catch {
-            NSLog("ERROR -- Could not copy '\(srcURL.path)' to '\(dstURL.path)' (\(error))")
-            return false
-        }
     }
 
     private static func shellQuoted(_ string: String) -> String {
