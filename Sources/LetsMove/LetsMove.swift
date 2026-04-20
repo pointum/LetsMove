@@ -65,6 +65,12 @@ public enum LetsMove {
         let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
         guard !destinationURL.resourceExists || destinationURL.isWritable else { return }
 
+        // If a copy already exists in the Applications folder, make sure it's not running
+        if destinationURL.isApplicationRunning {
+            NSWorkspace.shared.open(destinationURL)
+            exit(0)
+        }
+
         isInProgress = true
         defer { isInProgress = false }
 
@@ -82,12 +88,6 @@ public enum LetsMove {
                 UserDefaults.standard.set(true, forKey: alertSuppressKey)
             }
             return
-        }
-
-        // If a copy already exists in the Applications folder, make sure it's not running
-        if destinationURL.isApplicationRunning {
-            NSWorkspace.shared.open(destinationURL)
-            exit(0)
         }
 
         let fm = FileManager.default
