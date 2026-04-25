@@ -9,8 +9,13 @@ extension URL {
         (try? resourceValues(forKeys: [.isWritableKey]))?.isWritable == true
     }
 
-    var fileResourceIdentifier: (any NSCopying & NSSecureCoding & NSObjectProtocol)? {
+    private var fileResourceIdentifier: (any NSCopying & NSSecureCoding & NSObjectProtocol)? {
         try? resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier
+    }
+
+    @available(macOS 13.3, *)
+    private var fileIdentifier: UInt64? {
+        try? resourceValues(forKeys: [.fileIdentifierKey]).fileIdentifier
     }
 
     func contains(_ other: URL) -> Bool {
@@ -29,9 +34,16 @@ extension URL {
     }
 
     var isApplicationRunning: Bool {
-        guard let id = fileResourceIdentifier else { return false }
-        return NSWorkspace.shared.runningApplications.contains {
-            $0.bundleURL?.fileResourceIdentifier.map { id.isEqual($0) } == true
+        if #available(macOS 13.3, *) {
+            guard let id = fileIdentifier else { return false }
+            return NSWorkspace.shared.runningApplications.contains {
+                $0.bundleURL?.fileIdentifier == id
+            }
+        } else {
+            guard let id = fileResourceIdentifier else { return false }
+            return NSWorkspace.shared.runningApplications.contains {
+                $0.bundleURL?.fileResourceIdentifier.map(id.isEqual) == true
+            }
         }
     }
 
@@ -40,20 +52,19 @@ extension URL {
     }
 
     var removableDevicePath: String? {
-        let containingPath = deletingLastPathComponent().path
-
         var fs = statfs()
-        if statfs((containingPath as NSString).fileSystemRepresentation, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
+        let containingFSPath = (deletingLastPathComponent() as NSURL).fileSystemRepresentation
+        if statfs(containingFSPath, &fs) != 0 || (fs.f_flags & UInt32(MNT_ROOTFS)) != 0 {
             return nil
         }
 
-        let device = withUnsafeBytes(of: fs.f_mntfromname) { bytes -> String in
-            let ptr = bytes.baseAddress!.assumingMemoryBound(to: CChar.self)
+        let device = withUnsafeBytes(of: fs.f_mntfromname) {
+            let ptr = $0.baseAddress!.assumingMemoryBound(to: CChar.self)
             return FileManager.default.string(withFileSystemRepresentation: ptr, length: strlen(ptr))
         }
 
         let hdiutil = Process()
-        hdiutil.executableURL = URL(fileURLWithPath: "/usr/bin/hdiutil")
+        hdiutil.executableURL = URL(filePath: "/usr/bin/hdiutil")
         hdiutil.arguments = ["info", "-plist"]
         let pipe = Pipe()
         hdiutil.standardOutput = pipe

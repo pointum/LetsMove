@@ -11,7 +11,7 @@ A library that prompts users to move a running macOS application to the Applicat
 
 Requirements
 ------------
-Builds and runs on macOS 10.13 or higher. Requires Xcode 15 or later to build. 
+Runs on macOS 13 or higher. Requires Xcode 15 or later to build. 
 Does NOT support sandboxed applications.
 
 
@@ -37,6 +37,11 @@ Public domain
 
 Version History
 ---------------
+
+* 2.1.0
+	- Require macOS 13
+	- Show underlying errors
+	- Fix alert focus
 
 * 2.0.0
 	- Converted to Swift

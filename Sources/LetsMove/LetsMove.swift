@@ -62,7 +62,7 @@ public enum LetsMove {
 
         // Skip if won't be able to move
         guard let (applicationsDirectory, installToUserApplications) = preferredInstallLocation() else { return }
-        let destinationURL = applicationsDirectory.appendingPathComponent(bundleURL.lastPathComponent)
+        let destinationURL = applicationsDirectory.appending(component: bundleURL.lastPathComponent)
         guard !destinationURL.resourceExists || destinationURL.isWritable else { return }
 
         // If a copy already exists in the Applications folder, make sure it's not running
@@ -178,7 +178,7 @@ public enum LetsMove {
     private static func unmountDiskImage(at devicePath: String) {
         let script = "(/bin/sleep 5 && /usr/bin/hdiutil detach \(shellQuoted(devicePath))) &"
         let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/bin/sh")
+        task.executableURL = URL(filePath: "/bin/sh")
         task.arguments = ["-c", script]
         try? task.run()
     }
@@ -188,7 +188,7 @@ public enum LetsMove {
         // This is done so that the relaunched app opens as the front-most app.
         let pid = ProcessInfo.processInfo.processIdentifier
 
-        let quotedDestinationPath = shellQuoted(destination.path)
+        let quotedDestinationPath = shellQuoted(destination.path(percentEncoded: false))
 
         // Command run just before running open /final/path
         // Before we launch the new app, clear xattr:com.apple.quarantine to avoid
@@ -199,7 +199,7 @@ public enum LetsMove {
         let script = "(while /bin/kill -0 \(pid) >&/dev/null; do /bin/sleep 0.1; done; \(removeQuarantine); /usr/bin/open \(quotedDestinationPath)) &"
 
         let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/bin/sh")
+        task.executableURL = URL(filePath: "/bin/sh")
         task.arguments = ["-c", script]
         try? task.run()
     }

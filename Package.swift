@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "LetsMove",
     defaultLocalization: "en",
-    platforms: [.macOS(.v10_13)],
+    platforms: [.macOS(.v13)],
     products: [
         .library(name: "LetsMove", targets: ["LetsMove"])
     ],
