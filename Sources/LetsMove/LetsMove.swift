@@ -171,15 +171,11 @@ public enum LetsMove {
         return nil
     }
 
-    private static func shellQuoted(_ string: String) -> String {
-        "'\(string.replacingOccurrences(of: "'", with: "'\\''"))'"
-    }
-
     private static func unmountDiskImage(at devicePath: String) {
-        let script = "(/bin/sleep 5 && /usr/bin/hdiutil detach \(shellQuoted(devicePath))) &"
         let task = Process()
         task.executableURL = URL(filePath: "/bin/sh")
-        task.arguments = ["-c", script]
+        task.arguments = ["-c", "(/bin/sleep 5 && /usr/bin/hdiutil detach \"$1\") &",
+                          "--", devicePath]
         try? task.run()
     }
 
@@ -188,19 +184,20 @@ public enum LetsMove {
         // This is done so that the relaunched app opens as the front-most app.
         let pid = ProcessInfo.processInfo.processIdentifier
 
-        let quotedDestinationPath = shellQuoted(destination.path(percentEncoded: false))
-
-        // Command run just before running open /final/path
         // Before we launch the new app, clear xattr:com.apple.quarantine to avoid
         // duplicate "scary file from the internet" dialog.
+        let script = """
+            (while /bin/kill -0 \(pid) >&/dev/null
+            do /bin/sleep 0.1; done
 
-        let removeQuarantine = "/usr/bin/xattr -d -r com.apple.quarantine \(quotedDestinationPath)"
-
-        let script = "(while /bin/kill -0 \(pid) >&/dev/null; do /bin/sleep 0.1; done; \(removeQuarantine); /usr/bin/open \(quotedDestinationPath)) &"
+            /usr/bin/xattr -d -r com.apple.quarantine "$1"
+            /usr/bin/open "$1") &
+            """
 
         let task = Process()
         task.executableURL = URL(filePath: "/bin/sh")
-        task.arguments = ["-c", script]
+        task.arguments = ["-c", script,
+                          "--", destination.path(percentEncoded: false)]
         try? task.run()
     }
 }
